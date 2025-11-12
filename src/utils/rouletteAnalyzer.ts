@@ -58,11 +58,6 @@ const checkRecentDozenPattern = (
 
   if (results.length < lastN) return patterns;
 
-  const recent = results.slice(-lastN);
-  const nonZeroRecent = recent.filter((r) => r.dozen !== null);
-
-  if (nonZeroRecent.length < lastN) return patterns;
-
   // Verifica padrões: 1+2, 1+3, 2+3
   const dozenPairs = [
     [1, 2],
@@ -71,35 +66,54 @@ const checkRecentDozenPattern = (
   ];
 
   for (const pair of dozenPairs) {
-    const matchesPattern = nonZeroRecent.every((r) => pair.includes(r.dozen as number));
+    // Conta quantos nos ÚLTIMOS resultados seguem esse padrão (de trás pra frente)
+    let totalCount = 0;
+    let broken = false;
 
-    if (matchesPattern) {
-      // Conta quantos no total seguem esse padrão (de trás pra frente)
-      let totalCount = 0;
-      let broken = false;
+    for (let i = results.length - 1; i >= 0; i--) {
+      if (results[i].dozen === null) continue; // Ignora zero
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        if (results[i].dozen === null) continue; // Ignora zero
-
-        if (pair.includes(results[i].dozen as number)) {
-          totalCount++;
-        } else {
-          // QUEBROU O PADRÃO - encontrou número fora do padrão
-          broken = true;
-          break;
-        }
+      if (pair.includes(results[i].dozen as number)) {
+        totalCount++;
+      } else {
+        // QUEBROU O PADRÃO - encontrou número fora do padrão
+        break;
       }
+    }
 
-      // Se quebrou antes de chegar em 4, não é válido
-      if (totalCount < 4) {
-        broken = true;
-      }
+    // Verifica se os últimos 4 (sem contar zeros) estão no padrão
+    const recentNonZero = results
+      .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
+      .filter((r) => r.dozen !== null)
+      .slice(-lastN); // Pega os últimos 4 que não são zero
 
+    const last4InPattern =
+      recentNonZero.length >= lastN &&
+      recentNonZero.every((r) => pair.includes(r.dozen as number));
+
+    // Se os últimos 4 estão no padrão e temos 4+ no total, é válido
+    if (last4InPattern && totalCount >= 4) {
       patterns.push({
-        hasPattern: matchesPattern && !broken && totalCount >= 4,
+        hasPattern: true,
         dozens: pair as DozenPosition[],
         count: totalCount,
-        broken: broken,
+        broken: false,
+      });
+    } else if (totalCount > 0 && totalCount < 4) {
+      // Tinha começado mas não completou 4
+      patterns.push({
+        hasPattern: false,
+        dozens: pair as DozenPosition[],
+        count: totalCount,
+        broken: true,
+      });
+    } else if (totalCount >= 4 && !last4InPattern) {
+      // Tinha padrão mas quebrou
+      patterns.push({
+        hasPattern: false,
+        dozens: pair as DozenPosition[],
+        count: totalCount,
+        broken: true,
       });
     }
   }
@@ -121,11 +135,6 @@ const checkRecentColumnPattern = (
 
   if (results.length < lastN) return patterns;
 
-  const recent = results.slice(-lastN);
-  const nonZeroRecent = recent.filter((r) => r.column !== null);
-
-  if (nonZeroRecent.length < lastN) return patterns;
-
   // Verifica padrões: 1+2, 1+3, 2+3
   const columnPairs = [
     [1, 2],
@@ -134,35 +143,54 @@ const checkRecentColumnPattern = (
   ];
 
   for (const pair of columnPairs) {
-    const matchesPattern = nonZeroRecent.every((r) => pair.includes(r.column as number));
+    // Conta quantos nos ÚLTIMOS resultados seguem esse padrão (de trás pra frente)
+    let totalCount = 0;
+    let broken = false;
 
-    if (matchesPattern) {
-      // Conta quantos no total seguem esse padrão (de trás pra frente)
-      let totalCount = 0;
-      let broken = false;
+    for (let i = results.length - 1; i >= 0; i--) {
+      if (results[i].column === null) continue; // Ignora zero
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        if (results[i].column === null) continue; // Ignora zero
-
-        if (pair.includes(results[i].column as number)) {
-          totalCount++;
-        } else {
-          // QUEBROU O PADRÃO - encontrou número fora do padrão
-          broken = true;
-          break;
-        }
+      if (pair.includes(results[i].column as number)) {
+        totalCount++;
+      } else {
+        // QUEBROU O PADRÃO - encontrou número fora do padrão
+        break;
       }
+    }
 
-      // Se quebrou antes de chegar em 4, não é válido
-      if (totalCount < 4) {
-        broken = true;
-      }
+    // Verifica se os últimos 4 (sem contar zeros) estão no padrão
+    const recentNonZero = results
+      .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
+      .filter((r) => r.column !== null)
+      .slice(-lastN); // Pega os últimos 4 que não são zero
 
+    const last4InPattern =
+      recentNonZero.length >= lastN &&
+      recentNonZero.every((r) => pair.includes(r.column as number));
+
+    // Se os últimos 4 estão no padrão e temos 4+ no total, é válido
+    if (last4InPattern && totalCount >= 4) {
       patterns.push({
-        hasPattern: matchesPattern && !broken && totalCount >= 4,
+        hasPattern: true,
         columns: pair as ColumnPosition[],
         count: totalCount,
-        broken: broken,
+        broken: false,
+      });
+    } else if (totalCount > 0 && totalCount < 4) {
+      // Tinha começado mas não completou 4
+      patterns.push({
+        hasPattern: false,
+        columns: pair as ColumnPosition[],
+        count: totalCount,
+        broken: true,
+      });
+    } else if (totalCount >= 4 && !last4InPattern) {
+      // Tinha padrão mas quebrou
+      patterns.push({
+        hasPattern: false,
+        columns: pair as ColumnPosition[],
+        count: totalCount,
+        broken: true,
       });
     }
   }
@@ -259,7 +287,6 @@ export const analyzeRouletteResults = (
     }
 
     recommendation = `⚠️ PADRÃO QUEBROU!\n\nEstava em:\n${brokenInfo.join("\n")}\n\nAGUARDE o padrão voltar a se formar (4+ sequências consecutivas) antes de entrar.`;
-
   } else if (opportunities.length === 0) {
     // Nenhum padrão encontrado nos últimos 4
     overallScore = "ruim";
@@ -284,9 +311,9 @@ export const analyzeRouletteResults = (
     if (weakPatterns.length > 0) {
       recommendation = `❌ SEM PADRÃO VÁLIDO!\n\nTinha começado:\n${weakPatterns.join("\n")}\n\nMas ainda não completou 4 sequências. Aguarde!`;
     } else {
-      recommendation = "❌ Sem padrão válido! Os últimos 4 resultados não formam nenhum padrão de dúzias ou colunas. Aguarde pelo menos 4 resultados consecutivos no mesmo padrão.";
+      recommendation =
+        "❌ Sem padrão válido! Os últimos 4 resultados não formam nenhum padrão de dúzias ou colunas. Aguarde pelo menos 4 resultados consecutivos no mesmo padrão.";
     }
-
   } else {
     // Calcula a média dos counts
     const totalCount = opportunities.reduce((sum, opp) => sum + opp.sequenceCount, 0);
