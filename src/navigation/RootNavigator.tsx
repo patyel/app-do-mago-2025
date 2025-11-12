@@ -7,16 +7,16 @@ import { useAccessCodeStore } from "../state/accessCodeStore";
 // Importar screens
 import OnboardingScreen from "../screens/OnboardingScreen";
 import ActivationScreen from "../screens/ActivationScreen";
-import HomeScreen from "../screens/HomeScreen";
 import ImagePickerScreen from "../screens/ImagePickerScreen";
 import AnalysisScreen from "../screens/AnalysisScreen";
 import ResultsScreen from "../screens/ResultsScreen";
 import HistoryScreen from "../screens/HistoryScreen";
+import { MainTabs } from "./MainTabs";
 
 export type RootStackParamList = {
   Onboarding: undefined;
   Activation: undefined;
-  Home: undefined;
+  MainTabs: undefined;
   Camera: undefined;
   Analysis: { imageUri: string };
   Results: { analysis: RouletteAnalysis };
@@ -34,7 +34,7 @@ export const RootNavigator = () => {
       initialRouteName={
         hasCompletedOnboarding
           ? isActive
-            ? "Home"
+            ? "MainTabs"
             : "Activation"
           : "Onboarding"
       }
@@ -45,7 +45,7 @@ export const RootNavigator = () => {
     >
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Activation" component={ActivationScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="MainTabs" component={MainTabs} />
       <Stack.Screen name="Camera" component={ImagePickerScreen} />
       <Stack.Screen
         name="Analysis"

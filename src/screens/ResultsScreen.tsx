@@ -61,7 +61,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
             <View className="px-6 pt-4 pb-6">
               <View className="flex-row items-center justify-between mb-6">
                 <Pressable
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("MainTabs")}
                   className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
                 >
                   <Ionicons name="home" size={24} color="#a855f7" />
@@ -237,7 +237,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
               </View>
             </Pressable>
             <Pressable
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("MainTabs")}
               className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl py-5 items-center active:opacity-80 border-2 border-purple-400"
             >
               <View className="flex-row items-center">

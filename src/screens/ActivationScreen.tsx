@@ -51,8 +51,8 @@ const ActivationScreen: React.FC<ActivationScreenProps> = ({ navigation }) => {
 
     setIsLoading(false);
 
-    // Navega para Home
-    navigation.replace("Home");
+    // Navega para MainTabs
+    navigation.replace("MainTabs");
   };
 
   return (

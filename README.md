@@ -32,6 +32,19 @@ O app identifica sequências em:
 
 **Nota:** O app analisa TODOS os padrões encontrados na foto (1ª+2ª, 1ª+3ª, 2ª+3ª) e mostra quantas sequências cada um teve, incluindo padrões inativos.
 
+### 💰 Gerenciamento de Banca
+- **Configure sua banca inicial**: Defina o valor da sua banca
+- **Registro diário**: Adicione lucros ou perdas do dia
+- **Gráfico de evolução**: Visualize os últimos 7 dias
+- **Histórico completo**: Acompanhe os últimos 30 dias
+- **Estatísticas em tempo real**: Veja lucro total e variação percentual
+
+### 🧮 Calculadora de Lucro
+- **Meta diária**: Defina quanto quer lucrar por dia
+- **Gestão de apostas**: Calcula valores para progressão Martingale
+- **Planejamento financeiro**: Veja quantas operações pode fazer com sua banca
+- **Dicas de gestão**: Recomendações de gerenciamento de risco
+
 ### 🎮 Sistema de Classificação
 
 **🔴 Momento Fraco** (< 4 sequências)
@@ -103,17 +116,23 @@ O App do Mago opera **a favor da sequência**:
 src/
 ├── screens/           # Telas do app
 │   ├── OnboardingScreen.tsx    # Introdução e tutorial
-│   ├── HomeScreen.tsx          # Tela principal
+│   ├── ActivationScreen.tsx    # Ativação de código de acesso
+│   ├── HomeScreen.tsx          # Tela principal (Análise)
+│   ├── BankrollScreen.tsx      # Gerenciamento de banca
+│   ├── CalculatorScreen.tsx    # Calculadora de lucro
 │   ├── ImagePickerScreen.tsx   # Upload de foto
 │   ├── AnalysisScreen.tsx      # Processamento com IA
 │   ├── ResultsScreen.tsx       # Resultados da análise
 │   └── HistoryScreen.tsx       # Histórico e stats
 │
 ├── navigation/        # Configuração de rotas
-│   └── RootNavigator.tsx
+│   ├── RootNavigator.tsx       # Stack principal
+│   └── MainTabs.tsx            # Navegação em abas
 │
 ├── state/            # Gerenciamento de estado
-│   └── rouletteStore.ts    # Store Zustand
+│   ├── rouletteStore.ts        # Store de análises
+│   ├── accessCodeStore.ts      # Store de autenticação
+│   └── bankrollStore.ts        # Store de banca
 │
 ├── utils/            # Utilitários
 │   ├── rouletteAnalyzer.ts   # Motor de análise de padrões
@@ -122,6 +141,9 @@ src/
 ├── types/            # TypeScript types
 │   ├── roulette.ts   # Tipos do domínio
 │   └── ai.ts         # Tipos de IA
+│
+├── services/         # Serviços externos
+│   └── backend.ts    # Cliente do backend
 │
 └── api/              # Integrações
     ├── chat-service.ts       # Cliente OpenAI
@@ -175,18 +197,38 @@ src/
 
 ## 📝 Como Usar
 
-1. **Primeira vez**: Veja o onboarding explicando como a magia da IA funciona
-2. **Tela Home**: Veja suas estatísticas e toque em "📸 Enviar Foto da Mesa"
-3. **Escolher Foto**: Selecione uma foto da galeria mostrando o painel da roleta
-4. **Análise**: Aguarde a magia da IA processar (5-10 segundos)
-5. **Resultados**: Veja as oportunidades detectadas com classificação visual
-6. **Histórico**: Acesse suas análises anteriores a qualquer momento
+### 🔐 Primeiro Acesso
+1. **Insira seu código de acesso**: Use um dos códigos CLIENTE001-100
+2. **Ativação automática**: O código será vinculado ao seu dispositivo
+3. **Acesso liberado**: Você tem 30 dias de acesso a partir do primeiro uso
+
+### 📱 Navegação Principal (3 Abas)
+
+#### 📸 Aba Análise
+1. **Veja suas estatísticas**: Acompanhe seu histórico de análises
+2. **Envie foto da mesa**: Tire uma foto ou escolha da galeria
+3. **Análise IA**: Aguarde 5-10 segundos para processar
+4. **Veja resultados**: Oportunidades classificadas por confiança
+
+#### 💰 Aba Banca
+1. **Configure banca inicial**: Informe o valor da sua banca
+2. **Adicione resultados diários**: Registre lucros (+) ou perdas (-)
+3. **Visualize evolução**: Gráfico dos últimos 7 dias
+4. **Acompanhe histórico**: Veja os últimos 30 dias de resultados
+
+#### 🧮 Aba Calculadora
+1. **Defina meta diária**: Quanto quer lucrar por dia (ex: R$100)
+2. **Informe sua banca**: Valor disponível para operar
+3. **Calcule gestão**: Veja valores de 1ª e 2ª aposta (Martingale)
+4. **Planeje operações**: Quantas operações pode fazer com sua banca
 
 ### Dicas para Melhores Resultados:
 - Tire fotos claras do painel com pelo menos 8-10 números visíveis
 - Certifique-se de que os números estão legíveis
 - O app lê da ESQUERDA para DIREITA (ou de CIMA para BAIXO em painéis verticais)
 - O número mais à direita/embaixo é o MAIS RECENTE
+- Use a calculadora para planejar suas apostas ANTES de entrar
+- Registre TODOS os resultados na aba Banca para ter estatísticas precisas
 
 ## 🔐 Variáveis de Ambiente
 
@@ -202,6 +244,24 @@ O app requer:
 
 ## 🎯 Melhorias Recentes
 
+### ✨ Navegação em Abas (v3.0)
+- **3 Abas principais**: Análise, Banca e Calculadora
+- **Persistência de login**: Não precisa mais inserir código toda vez
+- **Bottom Tab Navigator**: Navegação intuitiva e rápida entre funcionalidades
+
+### 💰 Gerenciamento de Banca (v3.0)
+- **Configuração inicial**: Define banca de entrada
+- **Registro diário**: Adiciona lucros e perdas do dia
+- **Gráfico visual**: Barras dos últimos 7 dias
+- **Histórico completo**: 30 dias de resultados
+- **Estatísticas**: Lucro total, variação % e banca atual
+
+### 🧮 Calculadora de Lucro (v3.0)
+- **Meta diária**: Calcula valores necessários para atingir meta
+- **Progressão Martingale**: 1ª e 2ª aposta calculadas automaticamente
+- **Gestão de risco**: Mostra % da banca e operações possíveis
+- **Dicas integradas**: Recomendações de gestão de banca
+
 ### ✨ Design Gamificado (v2.0)
 - **OnboardingScreen**: Header maior com gradiente, copy persuasivo, cards gamificados
 - **HomeScreen**: Estatísticas com ícones, botão principal com borda gradiente, steps numerados
@@ -213,13 +273,16 @@ O app requer:
 - **Análise de padrões**: Verifica apenas os últimos 4 resultados para entradas ativas
 - **Detecção completa**: Mostra TODOS os padrões encontrados (ativos e inativos)
 - **Remoção de cores**: App agora analisa apenas dúzias e colunas (sem cores)
+- **Device locking**: 1 código por dispositivo para evitar compartilhamento
 
 ## 🎯 Melhorias Futuras
 
 - [ ] Adicionar animações com Reanimated
+- [ ] Exportar relatórios de banca (PDF/CSV)
+- [ ] Notificações de metas atingidas
+- [ ] Gráficos de tendências avançados
 - [ ] Modo offline com análise local
 - [ ] Compartilhamento de resultados
-- [ ] Gráficos de tendências
 - [ ] Alertas de padrões em tempo real
 - [ ] Suporte a diferentes tipos de roleta (europeia, americana)
 - [ ] Tutorial interativo in-app

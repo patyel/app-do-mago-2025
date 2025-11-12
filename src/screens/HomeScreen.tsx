@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigator";
 import { useRouletteStore } from "../state/rouletteStore";
@@ -10,11 +11,8 @@ import { backendService } from "../services/backend";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
-type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
-};
-
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+const HomeScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const userStats = useRouletteStore((s) => s.userStats);
   const codigo = useAccessCodeStore((s) => s.codigo);
   const userInfo = useAccessCodeStore((s) => s.userInfo);
