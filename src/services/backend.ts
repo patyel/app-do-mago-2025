@@ -1,8 +1,8 @@
 // Serviço de Backend API
-// IMPORTANTE: Troque esta URL quando fizer deploy no Railway/Render
+// Backend deployado no Render
 const BACKEND_URL = __DEV__
   ? "http://localhost:3000" // Desenvolvimento local
-  : "https://seu-app.railway.app"; // Produção - TROQUE AQUI depois do deploy
+  : "https://mago-backend.onrender.com"; // Produção
 
 export const backendService = {
   /**
