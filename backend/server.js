@@ -64,16 +64,18 @@ const verificarCodigo = (codigo, deviceId) => {
   }
 
   const agora = new Date();
-  const expira = new Date(user.expiraEm);
 
-  if (agora > expira) {
-    return { valido: false, motivo: "Código expirado" };
-  }
-
-  // Verifica deviceId
+  // Verifica deviceId e ativa código no primeiro uso
   if (user.deviceId === null) {
-    // Primeira vez usando - vincula ao dispositivo
+    // Primeira vez usando - vincula ao dispositivo e define expiração
     user.deviceId = deviceId;
+    user.primeiroUso = agora.toISOString();
+
+    // Define expiração para 30 dias a partir de agora
+    const expiraEm = new Date(agora);
+    expiraEm.setDate(expiraEm.getDate() + 30);
+    user.expiraEm = expiraEm.toISOString();
+
     data.users[codigo] = user;
     saveUsers(data);
   } else if (user.deviceId !== deviceId) {
@@ -82,6 +84,12 @@ const verificarCodigo = (codigo, deviceId) => {
       valido: false,
       motivo: "Este código já está em uso em outro dispositivo",
     };
+  }
+
+  // Verifica expiração
+  const expira = new Date(user.expiraEm);
+  if (agora > expira) {
+    return { valido: false, motivo: "Código expirado" };
   }
 
   const diasRestantes = Math.ceil((expira - agora) / (1000 * 60 * 60 * 24));

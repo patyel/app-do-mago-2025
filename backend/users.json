@@ -4,31 +4,34 @@
       "nome": "Plano Básico",
       "email": "basico@mago.com",
       "criadoEm": "2025-11-12T00:00:00.000Z",
-      "expiraEm": "2025-12-12T23:59:59.999Z",
+      "expiraEm": null,
       "ativo": true,
       "totalAnalises": 0,
       "ultimaAnalise": null,
-      "deviceId": null
+      "deviceId": null,
+      "primeiroUso": null
     },
     "PREMIUM2025": {
       "nome": "Plano Premium",
       "email": "premium@mago.com",
       "criadoEm": "2025-11-12T00:00:00.000Z",
-      "expiraEm": "2025-12-12T23:59:59.999Z",
+      "expiraEm": null,
       "ativo": true,
       "totalAnalises": 0,
       "ultimaAnalise": null,
-      "deviceId": null
+      "deviceId": null,
+      "primeiroUso": null
     },
     "VIP2025": {
       "nome": "Plano VIP",
       "email": "vip@mago.com",
       "criadoEm": "2025-11-12T00:00:00.000Z",
-      "expiraEm": "2025-12-12T23:59:59.999Z",
+      "expiraEm": null,
       "ativo": true,
       "totalAnalises": 0,
       "ultimaAnalise": null,
-      "deviceId": null
+      "deviceId": null,
+      "primeiroUso": null
     }
   }
 }
