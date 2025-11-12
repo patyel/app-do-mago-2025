@@ -74,7 +74,7 @@ const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] =>
       }
     }
 
-    // Verifica se os últimos 4 estão no padrão
+    // Verifica se os últimos 4 estão no padrão (padrão ativo AGORA)
     const last4NonZero = results
       .slice(-10)
       .filter((r) => r.dozen !== null)
@@ -82,38 +82,42 @@ const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] =>
     const isActive =
       last4NonZero.length >= 4 && last4NonZero.every((r) => pair.includes(r.dozen as number));
 
-    // Verifica se acabou de quebrar (tinha padrão mas o último número quebrou)
-    // NOVA LÓGICA: Verifica se existia um padrão forte (4+) e o último número quebrou
-    let justBroke = false;
-    let countBeforeBreak = 0;
-
-    // Primeiro, conta quantos do padrão existem ANTES do último número
-    const allExceptLast = results.slice(0, -1).filter((r) => r.dozen !== null);
-    let consecutiveFromEnd = 0;
-    for (let i = allExceptLast.length - 1; i >= 0; i--) {
-      if (pair.includes(allExceptLast[i].dozen as number)) {
-        consecutiveFromEnd++;
+    // NOVA LÓGICA: Busca o MAIOR padrão consecutivo em toda a sequência
+    let maxConsecutive = 0;
+    let currentConsecutive = 0;
+    for (const result of results) {
+      if (result.dozen === null) continue;
+      if (pair.includes(result.dozen)) {
+        currentConsecutive++;
+        maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
       } else {
-        break;
+        currentConsecutive = 0;
       }
     }
 
-    // Se tinha 4+ sequências E o último número quebrou
-    const lastResult = results[results.length - 1];
-    if (consecutiveFromEnd >= 4 && lastResult.dozen !== null && !pair.includes(lastResult.dozen)) {
-      justBroke = true;
-      countBeforeBreak = consecutiveFromEnd;
-      console.log(`🔴 QUEBRA DETECTADA em Dúzia ${name}: tinha ${consecutiveFromEnd}x, último ${lastResult.number} (${lastResult.dozen}ª dúzia) quebrou!`);
-    }
+    // Se o maior padrão foi >= 4, considera válido
+    if (maxConsecutive >= 4) {
+      // Verifica se acabou de quebrar
+      const allExceptLast = results.slice(0, -1).filter((r) => r.dozen !== null);
+      let consecutiveFromEnd = 0;
+      for (let i = allExceptLast.length - 1; i >= 0; i--) {
+        if (pair.includes(allExceptLast[i].dozen as number)) {
+          consecutiveFromEnd++;
+        } else {
+          break;
+        }
+      }
 
-    if (countFromEnd > 0 || justBroke) {
+      const lastResult = results[results.length - 1];
+      const justBroke = consecutiveFromEnd >= 4 && lastResult.dozen !== null && !pair.includes(lastResult.dozen);
+
       allPatterns.push({
         type: "dozen",
         positions: name,
-        count: countFromEnd,
+        count: maxConsecutive, // Usa o MAIOR padrão encontrado
         isActive,
         justBroke,
-        countBeforeBreak: justBroke ? countBeforeBreak : undefined,
+        countBeforeBreak: justBroke ? consecutiveFromEnd : undefined,
       });
     }
   }
@@ -142,7 +146,7 @@ const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] =
       }
     }
 
-    // Verifica se os últimos 4 estão no padrão
+    // Verifica se os últimos 4 estão no padrão (padrão ativo AGORA)
     const last4NonZero = results
       .slice(-10)
       .filter((r) => r.column !== null)
@@ -150,38 +154,42 @@ const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] =
     const isActive =
       last4NonZero.length >= 4 && last4NonZero.every((r) => pair.includes(r.column as number));
 
-    // Verifica se acabou de quebrar (tinha padrão mas o último número quebrou)
-    // NOVA LÓGICA: Verifica se existia um padrão forte (4+) e o último número quebrou
-    let justBroke = false;
-    let countBeforeBreak = 0;
-
-    // Primeiro, conta quantos do padrão existem ANTES do último número
-    const allExceptLast = results.slice(0, -1).filter((r) => r.column !== null);
-    let consecutiveFromEnd = 0;
-    for (let i = allExceptLast.length - 1; i >= 0; i--) {
-      if (pair.includes(allExceptLast[i].column as number)) {
-        consecutiveFromEnd++;
+    // NOVA LÓGICA: Busca o MAIOR padrão consecutivo em toda a sequência
+    let maxConsecutive = 0;
+    let currentConsecutive = 0;
+    for (const result of results) {
+      if (result.column === null) continue;
+      if (pair.includes(result.column)) {
+        currentConsecutive++;
+        maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
       } else {
-        break;
+        currentConsecutive = 0;
       }
     }
 
-    // Se tinha 4+ sequências E o último número quebrou
-    const lastResult = results[results.length - 1];
-    if (consecutiveFromEnd >= 4 && lastResult.column !== null && !pair.includes(lastResult.column)) {
-      justBroke = true;
-      countBeforeBreak = consecutiveFromEnd;
-      console.log(`🔴 QUEBRA DETECTADA em Coluna ${name}: tinha ${consecutiveFromEnd}x, último ${lastResult.number} (${lastResult.column}ª coluna) quebrou!`);
-    }
+    // Se o maior padrão foi >= 4, considera válido
+    if (maxConsecutive >= 4) {
+      // Verifica se acabou de quebrar
+      const allExceptLast = results.slice(0, -1).filter((r) => r.column !== null);
+      let consecutiveFromEnd = 0;
+      for (let i = allExceptLast.length - 1; i >= 0; i--) {
+        if (pair.includes(allExceptLast[i].column as number)) {
+          consecutiveFromEnd++;
+        } else {
+          break;
+        }
+      }
 
-    if (countFromEnd > 0 || justBroke) {
+      const lastResult = results[results.length - 1];
+      const justBroke = consecutiveFromEnd >= 4 && lastResult.column !== null && !pair.includes(lastResult.column);
+
       allPatterns.push({
         type: "column",
         positions: name,
-        count: countFromEnd,
+        count: maxConsecutive, // Usa o MAIOR padrão encontrado
         isActive,
         justBroke,
-        countBeforeBreak: justBroke ? countBeforeBreak : undefined,
+        countBeforeBreak: justBroke ? consecutiveFromEnd : undefined,
       });
     }
   }
