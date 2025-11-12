@@ -367,9 +367,9 @@ export const analyzeRouletteResults = (
   // Se teve quebra recente, mas TEM padrões ativos, mostra ambos!
   if (hasRecentBreak && opportunities.length > 0) {
     // Tem padrões ativos E padrões que quebraram
-    const breakDetails = brokenPatterns
-      .map((bp) => `${bp.name} (tinha ${bp.countBefore}x sequências)`)
-      .join(" e ");
+    const breakDetailsList = brokenPatterns
+      .map((bp) => `• ${bp.name}: tinha ${bp.countBefore}x sequências e quebrou agora!`)
+      .join("\n");
 
     const totalCount = opportunities.reduce((sum, opp) => sum + opp.sequenceCount, 0);
     const avgCount = totalCount / opportunities.length;
@@ -380,7 +380,7 @@ export const analyzeRouletteResults = (
       overallScore = "bom";
     }
 
-    recommendation = `🎯 ENTRE AGORA!\n\n✅ PADRÕES ATIVOS:\n${opportunities.map((o) => `${o.betOn.join(" + ")}: ${o.sequenceCount}x`).join("\n")}\n\n⚠️ ATENÇÃO: Outro padrão quebrou:\n${breakDetails}\n\nO último número quebrou esse padrão. Aguarde se ele volta ou entre nos padrões ativos acima.\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
+    recommendation = `🎯 ENTRE NOS PADRÕES ATIVOS!\n\n✅ ENTRADAS VÁLIDAS:\n${opportunities.map((o) => `• ${o.betOn.join(" + ")}: ${o.sequenceCount}x ${o.confidence === "alavancar" ? "🚀 ALAVANCAR" : "👍 BOM"}`).join("\n")}\n\n⚠️ ATENÇÃO - PADRÃO QUEBROU:\n${breakDetailsList}\n\nEspere para ver se este padrão volta ou continue com as entradas ativas acima.\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
 
     return {
       id: Date.now().toString(),
