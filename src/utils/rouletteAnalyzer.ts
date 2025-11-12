@@ -66,9 +66,9 @@ const checkRecentDozenPattern = (
   ];
 
   for (const pair of dozenPairs) {
-    // Conta quantos nos ÚLTIMOS resultados seguem esse padrão (de trás pra frente)
+    // IMPORTANTE: results[results.length - 1] é o número MAIS RECENTE (última entrada)
+    // Contamos DE TRÁS PRA FRENTE quantos seguem o padrão
     let totalCount = 0;
-    let broken = false;
 
     for (let i = results.length - 1; i >= 0; i--) {
       if (results[i].dozen === null) continue; // Ignora zero
@@ -82,6 +82,7 @@ const checkRecentDozenPattern = (
     }
 
     // Verifica se os últimos 4 (sem contar zeros) estão no padrão
+    // Pega do final do array (mais recentes)
     const recentNonZero = results
       .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
       .filter((r) => r.dozen !== null)
@@ -143,9 +144,9 @@ const checkRecentColumnPattern = (
   ];
 
   for (const pair of columnPairs) {
-    // Conta quantos nos ÚLTIMOS resultados seguem esse padrão (de trás pra frente)
+    // IMPORTANTE: results[results.length - 1] é o número MAIS RECENTE (última entrada)
+    // Contamos DE TRÁS PRA FRENTE quantos seguem o padrão
     let totalCount = 0;
-    let broken = false;
 
     for (let i = results.length - 1; i >= 0; i--) {
       if (results[i].column === null) continue; // Ignora zero
@@ -159,6 +160,7 @@ const checkRecentColumnPattern = (
     }
 
     // Verifica se os últimos 4 (sem contar zeros) estão no padrão
+    // Pega do final do array (mais recentes)
     const recentNonZero = results
       .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
       .filter((r) => r.column !== null)
