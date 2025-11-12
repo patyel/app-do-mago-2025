@@ -168,28 +168,6 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
                 </View>
               )}
 
-              {/* Numbers Detected */}
-              <View className="mt-6 bg-slate-800 rounded-2xl p-5">
-                <Text className="text-white font-bold text-lg mb-3">
-                  Números Detectados ({analysis.detectedNumbers.length})
-                </Text>
-                <View className="flex-row flex-wrap">
-                  {analysis.detectedNumbers.map((result, index) => (
-                    <View
-                      key={index}
-                      className={`w-10 h-10 rounded-full items-center justify-center mr-2 mb-2 ${
-                        result.color === "red"
-                          ? "bg-red-500"
-                          : result.color === "black"
-                          ? "bg-black border border-white"
-                          : "bg-green-600"
-                      }`}
-                    >
-                      <Text className="text-white font-bold">{result.number}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
             </View>
           </ScrollView>
 
