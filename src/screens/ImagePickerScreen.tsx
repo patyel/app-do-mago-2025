@@ -40,6 +40,30 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ navigation }) => {
     }
   };
 
+  const takePhoto = async () => {
+    // Solicita permissão da câmera
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (status !== "granted") {
+      Alert.alert(
+        "Permissão Necessária",
+        "Precisamos de acesso à câmera para você tirar fotos"
+      );
+      return;
+    }
+
+    // Abre a câmera
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
+
   const analyzeImage = () => {
     if (selectedImage) {
       navigation.navigate("Analysis", { imageUri: selectedImage });
@@ -72,33 +96,64 @@ const CameraScreen: React.FC<CameraScreenProps> = ({ navigation }) => {
               // Estado: Nenhuma imagem selecionada
               <View className="items-center">
                 <View className="w-32 h-32 bg-purple-500/20 rounded-full items-center justify-center mb-8">
-                  <Ionicons name="images" size={64} color="#a855f7" />
+                  <Ionicons name="camera" size={64} color="#a855f7" />
                 </View>
 
                 <Text className="text-white text-2xl font-bold text-center mb-3">
-                  Escolha uma Foto
+                  Escolha uma Opção
                 </Text>
                 <Text className="text-slate-400 text-center mb-8 px-4">
-                  Selecione uma foto do painel da roleta mostrando os últimos resultados
+                  Tire uma foto agora ou envie da sua galeria
                 </Text>
 
-                <Pressable
-                  onPress={pickImage}
-                  className="bg-purple-500 rounded-2xl py-4 px-8 items-center active:opacity-80"
-                >
-                  <View className="flex-row items-center">
-                    <Ionicons name="cloud-upload" size={24} color="white" />
-                    <Text className="text-white font-bold text-lg ml-2">
-                      Escolher da Galeria
-                    </Text>
-                  </View>
-                </Pressable>
+                {/* Botões de Opção */}
+                <View className="w-full space-y-4 mb-8">
+                  <Pressable
+                    onPress={takePhoto}
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl py-5 px-6 items-center active:opacity-80 border-2 border-purple-400"
+                  >
+                    <View className="flex-row items-center">
+                      <View className="w-10 h-10 bg-white/20 rounded-full items-center justify-center mr-3">
+                        <Ionicons name="camera" size={24} color="white" />
+                      </View>
+                      <View className="flex-1">
+                        <Text className="text-white font-black text-lg">
+                          📸 Tirar Foto Agora
+                        </Text>
+                        <Text className="text-purple-200 text-sm">
+                          Abrir câmera e capturar
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={pickImage}
+                    className="bg-slate-800 rounded-2xl py-5 px-6 items-center active:opacity-80 border border-slate-700"
+                  >
+                    <View className="flex-row items-center">
+                      <View className="w-10 h-10 bg-purple-500/20 rounded-full items-center justify-center mr-3">
+                        <Ionicons name="images" size={24} color="#a855f7" />
+                      </View>
+                      <View className="flex-1">
+                        <Text className="text-white font-bold text-lg">
+                          🖼️ Escolher da Galeria
+                        </Text>
+                        <Text className="text-slate-400 text-sm">
+                          Selecionar foto existente
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                </View>
 
                 {/* Dicas */}
-                <View className="mt-12 bg-slate-800 rounded-2xl p-5 w-full">
+                <View className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-5 w-full border border-slate-700">
                   <View className="flex-row items-center mb-3">
-                    <Ionicons name="bulb" size={20} color="#a855f7" />
-                    <Text className="text-white font-bold ml-2">Dicas</Text>
+                    <View className="w-8 h-8 bg-purple-500 rounded-xl items-center justify-center mr-2">
+                      <Ionicons name="bulb" size={20} color="white" />
+                    </View>
+                    <Text className="text-white font-bold text-base">Dicas para Melhor Análise</Text>
                   </View>
                   <Text className="text-slate-300 text-sm leading-6">
                     • Certifique-se que os números estão visíveis{"\n"}

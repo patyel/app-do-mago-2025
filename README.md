@@ -7,7 +7,7 @@
 ## ✨ Funcionalidades
 
 ### 🎯 Análise Inteligente com IA
-- Envie uma foto do painel da roleta da sua galeria
+- **Tire foto agora** ou **envie da galeria**
 - IA de visão (GPT-4o) detecta automaticamente os números
 - Análise matemática de padrões em tempo real
 - **Simples, rápido e preciso!**
