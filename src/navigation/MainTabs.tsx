@@ -14,15 +14,15 @@ export const MainTabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#1e293b",
-          borderTopColor: "#334155",
+          backgroundColor: "#0a0a0a",
+          borderTopColor: "#dc2626",
           borderTopWidth: 2,
           height: 90,
           paddingBottom: 30,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: "#10b981",
-        tabBarInactiveTintColor: "#64748b",
+        tabBarActiveTintColor: "#eab308",
+        tabBarInactiveTintColor: "#737373",
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: "600",

@@ -144,15 +144,15 @@ export default function BankrollScreen() {
 
         {/* Cards de Resumo */}
         <View className="px-6 mb-6">
-          <View className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-3xl p-6 border-2 border-purple-400 mb-4">
+          <View className="bg-gradient-to-br from-casino-red-600 to-casino-red-700 rounded-3xl p-6 border-2 border-casino-gold-500 mb-4">
             <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-purple-200 text-sm">Banca Atual</Text>
+              <Text className="text-casino-gold-200 text-sm">Banca Atual</Text>
               <Pressable
                 onPress={() => {
                   setEditBankrollAmount(currentBankroll.toFixed(2));
                   setShowEditBankroll(true);
                 }}
-                className="bg-purple-500/30 px-3 py-1 rounded-full active:opacity-70"
+                className="bg-casino-gold-500/30 px-3 py-1 rounded-full active:opacity-70"
               >
                 <Text className="text-white text-xs font-bold">Editar</Text>
               </Pressable>
@@ -161,7 +161,7 @@ export default function BankrollScreen() {
               <Ionicons
                 name="wallet"
                 size={32}
-                color="#c084fc"
+                color="#eab308"
                 style={{ marginRight: 12 }}
               />
               <Text className="text-white text-4xl font-bold">
@@ -295,7 +295,7 @@ export default function BankrollScreen() {
                                     live.time === "11h"
                                       ? "bg-blue-500/20"
                                       : live.time === "15h"
-                                        ? "bg-purple-500/20"
+                                        ? "bg-casino-gold-500/20"
                                         : "bg-amber-500/20"
                                   }`}
                                 >
@@ -304,7 +304,7 @@ export default function BankrollScreen() {
                                       live.time === "11h"
                                         ? "text-blue-400"
                                         : live.time === "15h"
-                                          ? "text-purple-400"
+                                          ? "text-casino-gold-400"
                                           : "text-amber-400"
                                     }`}
                                   >
@@ -392,7 +392,7 @@ export default function BankrollScreen() {
                     onPress={() => setSelectedLive("15h")}
                     className={`flex-1 py-2 rounded-xl items-center border-2 ${
                       selectedLive === "15h"
-                        ? "bg-purple-500 border-purple-400"
+                        ? "bg-casino-gold-500 border-casino-gold-400"
                         : "bg-slate-700 border-slate-600"
                     }`}
                   >
@@ -500,10 +500,10 @@ export default function BankrollScreen() {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View className="bg-slate-800 rounded-3xl p-6 mx-6 border-2 border-purple-500 w-80">
+              <View className="bg-slate-800 rounded-3xl p-6 mx-6 border-2 border-casino-gold-500 w-80">
                 <View className="items-center mb-4">
-                  <View className="w-16 h-16 bg-purple-500/20 rounded-full items-center justify-center mb-3">
-                    <Ionicons name="wallet" size={32} color="#a855f7" />
+                  <View className="w-16 h-16 bg-casino-gold-500/20 rounded-full items-center justify-center mb-3">
+                    <Ionicons name="wallet" size={32} color="#eab308" />
                   </View>
                   <Text className="text-white text-2xl font-bold">
                     Editar Banca
@@ -540,7 +540,7 @@ export default function BankrollScreen() {
 
                   <Pressable
                     onPress={handleEditBankroll}
-                    className="flex-1 bg-purple-500 py-3 rounded-xl items-center active:opacity-70"
+                    className="flex-1 bg-casino-red-600 py-3 rounded-xl items-center active:opacity-70"
                   >
                     <Text className="text-white font-bold">Salvar</Text>
                   </Pressable>

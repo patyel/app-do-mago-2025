@@ -138,7 +138,7 @@ export default function CalculatorScreen() {
                 {/* Botão Calcular */}
                 <Pressable
                   onPress={() => setShowResults(true)}
-                  className="bg-purple-500 py-4 rounded-xl items-center active:opacity-70"
+                  className="bg-casino-red-600 py-4 rounded-xl items-center active:opacity-70"
                   disabled={!dailyGoal || !bankroll}
                 >
                   <Text className="text-white text-lg font-bold">
@@ -263,8 +263,8 @@ export default function CalculatorScreen() {
                             </View>
 
                             <View className="flex-row items-center">
-                              <View className="w-6 h-6 bg-purple-500/20 rounded-full items-center justify-center mr-2">
-                                <Text className="text-purple-400 text-xs font-bold">
+                              <View className="w-6 h-6 bg-casino-gold-500/20 rounded-full items-center justify-center mr-2">
+                                <Text className="text-casino-gold-400 text-xs font-bold">
                                   2
                                 </Text>
                               </View>
@@ -342,41 +342,41 @@ export default function CalculatorScreen() {
                 </View>
 
                 {/* Dicas de Gestão */}
-                <View className="mt-6 bg-purple-500/10 rounded-2xl p-5 border-2 border-purple-500/30">
+                <View className="mt-6 bg-casino-red-900/20 rounded-2xl p-5 border-2 border-casino-gold-500/30">
                   <View className="flex-row items-center mb-3">
                     <Ionicons
                       name="bulb"
                       size={24}
-                      color="#a855f7"
+                      color="#eab308"
                       style={{ marginRight: 8 }}
                     />
-                    <Text className="text-purple-400 text-lg font-bold">
+                    <Text className="text-casino-gold-400 text-lg font-bold">
                       Dicas Importantes
                     </Text>
                   </View>
 
                   <View className="space-y-2">
                     <View className="flex-row">
-                      <Text className="text-purple-400 mr-2">•</Text>
-                      <Text className="text-purple-300 text-sm flex-1">
+                      <Text className="text-casino-gold-400 mr-2">•</Text>
+                      <Text className="text-casino-gold-200 text-sm flex-1">
                         Estratégias com menos entradas são mais agressivas
                       </Text>
                     </View>
                     <View className="flex-row">
-                      <Text className="text-purple-400 mr-2">•</Text>
-                      <Text className="text-purple-300 text-sm flex-1">
+                      <Text className="text-casino-gold-400 mr-2">•</Text>
+                      <Text className="text-casino-gold-200 text-sm flex-1">
                         Estratégias com mais entradas são mais seguras
                       </Text>
                     </View>
                     <View className="flex-row">
-                      <Text className="text-purple-400 mr-2">•</Text>
-                      <Text className="text-purple-300 text-sm flex-1">
+                      <Text className="text-casino-gold-400 mr-2">•</Text>
+                      <Text className="text-casino-gold-200 text-sm flex-1">
                         Use o app para identificar padrões antes de entrar
                       </Text>
                     </View>
                     <View className="flex-row">
-                      <Text className="text-purple-400 mr-2">•</Text>
-                      <Text className="text-purple-300 text-sm flex-1">
+                      <Text className="text-casino-gold-400 mr-2">•</Text>
+                      <Text className="text-casino-gold-200 text-sm flex-1">
                         Pare ao atingir a meta diária para proteger seu lucro
                       </Text>
                     </View>

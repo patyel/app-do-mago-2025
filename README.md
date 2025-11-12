@@ -82,15 +82,15 @@ O App do Mago opera **a favor da sequência**:
 
 ### Design Gamificado
 - Interface dark mode com gradientes visuais impressionantes
-- Tema roxo/purple (magia e IA)
+- **Tema Cassino**: Vermelho, preto, branco e dourado (tema de roleta/cassino)
 - Cards com bordas arredondadas e sombras
-- Ícones grandes e informativos
+- Ícones grandes e informativos (roleta disc)
 - Animações sutis nos botões
 
 ### Copy Persuasivo
 - **Onboarding**: "Não sabe analisar padrões? Relaxa! 😌 O Mago analisa tudo pra você."
-- **Home**: "✨ A IA que trabalha pra você"
-- **Results**: Cards coloridos por confiança (roxo=alavancar, amarelo=bom, vermelho=fraco)
+- **Home**: "🎰 A Magia da IA nas Suas Mãos"
+- **Results**: Cards coloridos por confiança (dourado=alavancar, amarelo=bom, vermelho=fraco)
 - Linguagem acessível e motivadora
 
 ### Tipografia e Espaçamento
@@ -186,11 +186,14 @@ src/
 
 ## 🎨 Design
 
-- **Tema**: Dark mode com gradientes (slate-950 → slate-800)
+- **Tema**: Dark mode com gradientes (casino-black-950 → casino-black-800)
 - **Cores principais**:
-  - Purple (roxo): CTA e magia
-  - Yellow (amarelo): Padrões bons
-  - Red (vermelho): Padrões ruins
+  - **Vermelho Casino** (#ef4444): CTA principal e destaques
+  - **Dourado** (#eab308): Alavancagem e elementos premium
+  - **Amarelo**: Padrões bons
+  - **Vermelho escuro**: Padrões ruins
+  - **Preto**: Background principal
+  - **Branco**: Textos principais
 - **Tipografia**: System font com pesos bold e semibold
 - **Espaçamento**: Generoso (Apple HIG)
 - **Bordas**: Arredondadas (rounded-2xl, rounded-3xl)
@@ -243,6 +246,13 @@ O app requer:
 - Histórico limitado: Últimas 50 análises
 
 ## 🎯 Melhorias Recentes
+
+### 🎨 Tema Cassino (v4.0)
+- **Redesign completo**: Tema vermelho/preto/branco/dourado
+- **Ícone de roleta**: Substituiu estrelinhas por ícone disc (roleta)
+- **Cores de cassino**: Vermelho #ef4444, Dourado #eab308, Preto #0a0a0a
+- **Bottom tabs**: Tab bar com tema cassino (fundo preto, borda vermelha, texto dourado)
+- **Todas as telas atualizadas**: OnboardingScreen, HomeScreen, ResultsScreen, BankrollScreen, CalculatorScreen
 
 ### ✨ Navegação em Abas (v3.0)
 - **3 Abas principais**: Análise, Banca e Calculadora

@@ -20,7 +20,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
   const getScoreColor = () => {
     switch (analysis.overallScore) {
       case "alavancar":
-        return { bg: "bg-purple-500", text: "text-purple-500", icon: "rocket" as const };
+        return { bg: "bg-casino-gold-500", text: "text-casino-gold-500", icon: "rocket" as const };
       case "bom":
         return { bg: "bg-yellow-500", text: "text-yellow-500", icon: "trending-up" as const };
       default:
@@ -42,7 +42,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
   const getConfidenceBadge = (confidence: string) => {
     switch (confidence) {
       case "alavancar":
-        return "bg-purple-500";
+        return "bg-casino-gold-500";
       case "bom":
         return "bg-yellow-500";
       default:
@@ -62,16 +62,16 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
               <View className="flex-row items-center justify-between mb-6">
                 <Pressable
                   onPress={() => navigation.navigate("MainTabs")}
-                  className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
+                  className="w-12 h-12 bg-casino-black-800 rounded-full items-center justify-center active:opacity-70"
                 >
-                  <Ionicons name="home" size={24} color="#a855f7" />
+                  <Ionicons name="home" size={24} color="#ef4444" />
                 </Pressable>
                 <Text className="text-white text-xl font-bold">Resultado</Text>
                 <Pressable
                   onPress={() => navigation.navigate("Onboarding")}
-                  className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
+                  className="w-12 h-12 bg-casino-black-800 rounded-full items-center justify-center active:opacity-70"
                 >
-                  <Ionicons name="information-circle-outline" size={24} color="#a855f7" />
+                  <Ionicons name="information-circle-outline" size={24} color="#ef4444" />
                 </Pressable>
               </View>
 
@@ -94,7 +94,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
               </View>
 
               {/* Image Preview */}
-              <View className="rounded-3xl overflow-hidden mb-6 border-2 border-purple-500/40">
+              <View className="rounded-3xl overflow-hidden mb-6 border-2 border-casino-gold-500/40">
                 <Image
                   source={{ uri: analysis.imageUri }}
                   className="w-full h-56"
@@ -130,7 +130,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
                         key={index}
                         className={`${
                           opp.confidence === "alavancar"
-                            ? "bg-gradient-to-r from-purple-900/40 to-purple-800/40 border-purple-500/50"
+                            ? "bg-gradient-to-r from-casino-gold-900/40 to-casino-gold-800/40 border-casino-gold-500/50"
                             : opp.confidence === "bom"
                             ? "bg-gradient-to-r from-yellow-900/40 to-yellow-800/40 border-yellow-500/50"
                             : "bg-gradient-to-r from-red-900/40 to-red-800/40 border-red-500/50"
@@ -161,7 +161,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
                               <Text
                                 className={`${
                                   opp.confidence === "alavancar"
-                                    ? "text-purple-300"
+                                    ? "text-casino-gold-300"
                                     : opp.confidence === "bom"
                                     ? "text-yellow-300"
                                     : "text-red-300"
@@ -229,7 +229,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
           <View className="px-6 pb-6 flex-row space-x-3">
             <Pressable
               onPress={() => navigation.navigate("Camera")}
-              className="flex-1 bg-gradient-to-r from-slate-700 to-slate-800 rounded-2xl py-5 items-center active:opacity-80 border border-slate-600"
+              className="flex-1 bg-gradient-to-r from-casino-black-700 to-casino-black-800 rounded-2xl py-5 items-center active:opacity-80 border-2 border-casino-red-600"
             >
               <View className="flex-row items-center">
                 <Ionicons name="camera" size={22} color="white" />
@@ -238,7 +238,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
             </Pressable>
             <Pressable
               onPress={() => navigation.navigate("MainTabs")}
-              className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl py-5 items-center active:opacity-80 border-2 border-purple-400"
+              className="flex-1 bg-gradient-to-r from-casino-red-600 to-casino-red-700 rounded-2xl py-5 items-center active:opacity-80 border-2 border-casino-gold-500"
             >
               <View className="flex-row items-center">
                 <Ionicons name="home" size={22} color="white" />
