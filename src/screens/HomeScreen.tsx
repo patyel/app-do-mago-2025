@@ -7,6 +7,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigator";
 import { useRouletteStore } from "../state/rouletteStore";
 import { useAccessCodeStore } from "../state/accessCodeStore";
+import { useStatsStore } from "../state/statsStore";
 import { backendService } from "../services/backend";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,6 +19,19 @@ const HomeScreen = () => {
   const userInfo = useAccessCodeStore((s) => s.userInfo);
   const clearCodigo = useAccessCodeStore((s) => s.clearCodigo);
   const updateUserInfo = useAccessCodeStore((s) => s.updateUserInfo);
+
+  // Stats gamificação
+  const userLevel = useStatsStore((s) => s.userLevel);
+  const xp = useStatsStore((s) => s.xp);
+  const totalAnalyses = useStatsStore((s) => s.stats.totalAnalyses);
+  const achievements = useStatsStore((s) => s.achievements);
+
+  const xpForCurrentLevel = (userLevel - 1) * 100;
+  const xpForNextLevel = userLevel * 100;
+  const xpInCurrentLevel = xp - xpForCurrentLevel;
+  const xpNeededForNextLevel = xpForNextLevel - xpForCurrentLevel;
+  const progressPercentage = (xpInCurrentLevel / xpNeededForNextLevel) * 100;
+  const unlockedCount = achievements.filter(a => a.unlocked).length;
 
   useEffect(() => {
     // Verifica o código quando abre a Home
@@ -94,6 +108,53 @@ const HomeScreen = () => {
                 </View>
               </View>
             </View>
+
+            {/* XP e Level Card - GAMIFICAÇÃO PRINCIPAL */}
+            <Pressable
+              onPress={() => navigation.navigate("Stats")}
+              className="bg-gradient-to-br from-purple-900/60 to-purple-800/60 rounded-3xl p-6 mb-6 border-2 border-purple-400 active:opacity-90"
+            >
+              <View className="flex-row items-center justify-between mb-4">
+                <View className="flex-row items-center flex-1">
+                  <View className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl items-center justify-center mr-4 border-4 border-yellow-300">
+                    <Text className="text-white text-2xl font-black">{userLevel}</Text>
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-white text-2xl font-black mb-1">Level {userLevel}</Text>
+                    <Text className="text-purple-200 text-sm font-semibold">
+                      {xpInCurrentLevel}/{xpNeededForNextLevel} XP
+                    </Text>
+                  </View>
+                </View>
+                <View className="items-center">
+                  <View className="bg-purple-500 px-4 py-2 rounded-xl mb-2">
+                    <Text className="text-white font-black text-lg">{unlockedCount}/7</Text>
+                  </View>
+                  <Text className="text-purple-300 text-xs font-bold">Conquistas</Text>
+                </View>
+              </View>
+
+              {/* Barra de progresso XP */}
+              <View className="bg-slate-900/80 rounded-full h-4 mb-3 overflow-hidden">
+                <View
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </View>
+
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center">
+                  <Ionicons name="flame" size={20} color="#fbbf24" />
+                  <Text className="text-yellow-300 font-bold ml-2">
+                    {totalAnalyses} Análises
+                  </Text>
+                </View>
+                <View className="flex-row items-center">
+                  <Text className="text-purple-200 font-semibold mr-2">Ver Progresso</Text>
+                  <Ionicons name="chevron-forward" size={20} color="#c084fc" />
+                </View>
+              </View>
+            </Pressable>
 
             {/* Access Code Info */}
             {userInfo && (

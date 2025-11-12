@@ -14,11 +14,13 @@ type StatsScreenProps = {
 };
 
 const StatsScreen: React.FC<StatsScreenProps> = ({ navigation }) => {
-  const { stats, userLevel, xp, getWinRate } = useStatsStore();
+  const { stats, userLevel, xp, getWinRate, achievements } = useStatsStore();
   const { dailyResults } = useBankrollStore();
 
   const winRate = getWinRate();
   const xpForNextLevel = ((userLevel) * 100) - xp;
+  const unlockedAchievements = achievements.filter(a => a.unlocked);
+  const nextAchievement = achievements.find(a => !a.unlocked);
 
   // Calcula melhor horário baseado em lucro
   const calculateBestLive = () => {
@@ -78,29 +80,35 @@ const StatsScreen: React.FC<StatsScreenProps> = ({ navigation }) => {
                 </Pressable>
               </View>
 
-              {/* Nível e XP */}
-              <View className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-3xl p-6 mb-6 border-2 border-purple-400">
+              {/* Nível e XP - DESTAQUE MAIOR */}
+              <View className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-3xl p-6 mb-6 border-4 border-yellow-400">
                 <View className="flex-row items-center justify-between mb-4">
-                  <View>
-                    <Text className="text-purple-200 text-sm">Seu Nível</Text>
-                    <Text className="text-white text-4xl font-black">
+                  <View className="flex-1">
+                    <Text className="text-purple-200 text-sm font-semibold mb-1">Seu Nível</Text>
+                    <Text className="text-white text-5xl font-black mb-2">
                       Nível {userLevel}
                     </Text>
+                    <View className="flex-row items-center">
+                      <Ionicons name="flame" size={20} color="#fbbf24" />
+                      <Text className="text-yellow-300 text-base font-bold ml-2">
+                        {xp} XP Total
+                      </Text>
+                    </View>
                   </View>
-                  <View className="w-20 h-20 bg-purple-500 rounded-full items-center justify-center">
-                    <Ionicons name="star" size={40} color="white" />
+                  <View className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full items-center justify-center border-4 border-yellow-300">
+                    <Ionicons name="star" size={48} color="white" />
                   </View>
                 </View>
-                <View className="bg-purple-900/50 rounded-full h-3 mb-2">
+                <View className="bg-purple-900/50 rounded-full h-4 mb-2 overflow-hidden">
                   <View
-                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-3 rounded-full"
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-4 rounded-full"
                     style={{
                       width: `${((xp % 100) / 100) * 100}%`,
                     }}
                   />
                 </View>
-                <Text className="text-purple-300 text-sm text-center">
-                  {xp % 100} / 100 XP • Faltam {xpForNextLevel} XP para próximo nível
+                <Text className="text-purple-200 text-sm font-semibold text-center">
+                  {xpForNextLevel} XP para o próximo nível
                 </Text>
               </View>
 
@@ -207,7 +215,7 @@ const StatsScreen: React.FC<StatsScreenProps> = ({ navigation }) => {
               </View>
 
               {/* Sequência Atual */}
-              <View className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-3xl p-6 border-2 border-purple-500/40">
+              <View className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-3xl p-6 mb-6 border-2 border-purple-500/40">
                 <View className="flex-row items-center mb-4">
                   <View className="w-12 h-12 bg-purple-500 rounded-2xl items-center justify-center mr-3">
                     <Ionicons name="flame" size={28} color="white" />
@@ -224,6 +232,69 @@ const StatsScreen: React.FC<StatsScreenProps> = ({ navigation }) => {
                     Continue assim! 🔥
                   </Text>
                 </View>
+              </View>
+
+              {/* Conquistas Recentes - GAMIFICAÇÃO */}
+              {unlockedAchievements.length > 0 && (
+                <View className="bg-gradient-to-r from-orange-900/40 to-orange-800/40 rounded-3xl p-6 mb-6 border-2 border-orange-500/50">
+                  <View className="flex-row items-center justify-between mb-4">
+                    <View className="flex-row items-center">
+                      <View className="w-12 h-12 bg-orange-500 rounded-2xl items-center justify-center mr-3">
+                        <Ionicons name="ribbon" size={28} color="white" />
+                      </View>
+                      <Text className="text-white font-black text-xl">
+                        Conquistas
+                      </Text>
+                    </View>
+                    <Pressable
+                      onPress={() => navigation.navigate("Achievements")}
+                      className="bg-orange-500 px-4 py-2 rounded-xl active:opacity-80"
+                    >
+                      <Text className="text-white font-bold text-sm">Ver Todas</Text>
+                    </Pressable>
+                  </View>
+                  <Text className="text-orange-200 text-base font-semibold mb-3">
+                    {unlockedAchievements.length} de 7 desbloqueadas
+                  </Text>
+                  <View className="bg-slate-900/50 rounded-full h-3 mb-4 overflow-hidden">
+                    <View
+                      className="bg-gradient-to-r from-orange-400 to-orange-500 h-3 rounded-full"
+                      style={{ width: `${(unlockedAchievements.length / 7) * 100}%` }}
+                    />
+                  </View>
+                  {nextAchievement && (
+                    <View className="bg-orange-500/20 rounded-2xl p-4">
+                      <Text className="text-orange-100 text-sm font-semibold mb-1">
+                        🎯 Próxima Conquista:
+                      </Text>
+                      <Text className="text-white text-base font-bold">
+                        {nextAchievement.title}
+                      </Text>
+                      <Text className="text-orange-200 text-sm">
+                        {nextAchievement.description}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
+
+              {/* Card Motivacional */}
+              <View className="bg-gradient-to-r from-green-900/40 to-green-800/40 rounded-3xl p-6 border-2 border-green-500/50">
+                <View className="flex-row items-center mb-4">
+                  <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-3">
+                    <Ionicons name="sparkles" size={28} color="white" />
+                  </View>
+                  <Text className="text-white font-black text-xl">
+                    Continue Evoluindo!
+                  </Text>
+                </View>
+                <Text className="text-green-100 text-base leading-6 font-medium">
+                  {stats.totalAnalyses < 10
+                    ? "Você está no caminho certo! Continue fazendo análises para desbloquear mais conquistas."
+                    : stats.totalAnalyses < 50
+                    ? "Ótimo progresso! Você já domina o básico. Continue assim para se tornar um Mago Experiente!"
+                    : "Incrível! Você é um verdadeiro mestre dos padrões. Continue sua jornada rumo ao topo! 🚀"}
+                </Text>
               </View>
             </View>
           </ScrollView>

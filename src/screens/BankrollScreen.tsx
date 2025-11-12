@@ -160,6 +160,7 @@ export default function BankrollScreen() {
 
         {/* Cards de Resumo */}
         <View className="px-6 mb-6">
+          {/* Card Principal de Banca */}
           <View className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-3xl p-6 border-2 border-purple-400 mb-4">
             <View className="flex-row items-center justify-between mb-2">
               <Text className="text-purple-200 text-sm">Banca Atual</Text>
@@ -186,6 +187,31 @@ export default function BankrollScreen() {
             </View>
           </View>
 
+          {/* Metas de Progresso - GAMIFICAÇÃO */}
+          <View className="bg-gradient-to-r from-yellow-900/40 to-yellow-800/40 rounded-3xl p-5 mb-4 border-2 border-yellow-500/50">
+            <View className="flex-row items-center mb-3">
+              <View className="w-12 h-12 bg-yellow-500 rounded-2xl items-center justify-center mr-3">
+                <Ionicons name="trophy" size={28} color="white" />
+              </View>
+              <View className="flex-1">
+                <Text className="text-white text-xl font-black">Meta: Dobrar Banca</Text>
+                <Text className="text-yellow-300 text-sm font-semibold">
+                  R$ {currentBankroll.toFixed(2)} / R$ {(initialBankroll * 2).toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            <View className="bg-slate-900/80 rounded-full h-4 mb-2 overflow-hidden">
+              <View
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full"
+                style={{ width: `${Math.min(100, (currentBankroll / (initialBankroll * 2)) * 100)}%` }}
+              />
+            </View>
+            <Text className="text-yellow-200 text-xs font-semibold text-center">
+              {((currentBankroll / (initialBankroll * 2)) * 100).toFixed(1)}% concluído! 🚀
+            </Text>
+          </View>
+
+          {/* Stats Row */}
           <View className="flex-row gap-3">
             <View className="flex-1 bg-slate-800 rounded-2xl p-4 border-2 border-slate-700">
               <Text className="text-slate-400 text-xs mb-1">Inicial</Text>

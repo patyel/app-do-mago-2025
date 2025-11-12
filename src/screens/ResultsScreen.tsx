@@ -1,5 +1,5 @@
 // Tela de Resultados - Mostra a análise completa
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, ScrollView, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -9,6 +9,8 @@ import { RouletteOpportunity } from "../types/roulette";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useStatsStore } from "../state/statsStore";
+import XPModal from "../components/XPModal";
+import AchievementModal from "../components/AchievementModal";
 
 type ResultsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Results">;
@@ -18,16 +20,48 @@ type ResultsScreenProps = {
 const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
   const { analysis } = route.params;
   const addAnalysis = useStatsStore((s) => s.addAnalysis);
+  const achievements = useStatsStore((s) => s.achievements);
+
+  // Estados para modais de gamificação
+  const [showXPModal, setShowXPModal] = useState(false);
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [unlockedAchievement, setUnlockedAchievement] = useState<any>(null);
+  const [previousAchievementCount, setPreviousAchievementCount] = useState(0);
 
   // Adiciona análise automaticamente ao entrar na tela
   useEffect(() => {
+    // Salva quantidade de conquistas antes
+    const unlockedBefore = achievements.filter(a => a.unlocked).length;
+    setPreviousAchievementCount(unlockedBefore);
+
     addAnalysis({
       id: Date.now().toString(),
       date: new Date().toISOString(),
       imageUri: analysis.imageUri,
       score: analysis.overallScore,
     });
+
+    // Mostra XP modal após 500ms
+    setTimeout(() => {
+      setShowXPModal(true);
+    }, 500);
   }, []);
+
+  // Verifica se desbloqueou conquista
+  useEffect(() => {
+    const unlockedNow = achievements.filter(a => a.unlocked).length;
+    if (unlockedNow > previousAchievementCount) {
+      // Nova conquista desbloqueada!
+      const newAchievement = achievements.find(a => a.unlocked && !previousAchievementCount);
+      if (newAchievement) {
+        setUnlockedAchievement(newAchievement);
+        // Mostra modal de conquista após fechar XP modal
+        setTimeout(() => {
+          setShowAchievementModal(true);
+        }, 1500);
+      }
+    }
+  }, [achievements]);
 
   const getScoreColor = () => {
     switch (analysis.overallScore) {
@@ -258,6 +292,19 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
               </View>
             </Pressable>
           </View>
+
+          {/* Modais de Gamificação */}
+          <XPModal
+            visible={showXPModal}
+            xpGained={10}
+            reason="Análise completa!"
+            onClose={() => setShowXPModal(false)}
+          />
+          <AchievementModal
+            visible={showAchievementModal}
+            achievement={unlockedAchievement}
+            onClose={() => setShowAchievementModal(false)}
+          />
         </SafeAreaView>
       </LinearGradient>
     </View>
