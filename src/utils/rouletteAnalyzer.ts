@@ -50,6 +50,7 @@ interface AllPatternInfo {
   count: number;
   isActive: boolean; // Se está ativo agora (últimos 4)
   justBroke: boolean; // Se acabou de quebrar (último número quebrou)
+  countBeforeBreak?: number; // Quantas sequências tinha antes da quebra
 }
 
 // Analisa TODOS os padrões de dúzias na foto
@@ -93,6 +94,7 @@ const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] =>
 
     // Quebra = o último NÃO está no padrão, mas os 4 anteriores estavam
     let justBroke = false;
+    let countBeforeBreak = 0;
     if (last5NonZero.length >= 5) {
       const lastDozen = last5NonZero[4].dozen;
       const previous4 = last5NonZero.slice(0, 4);
@@ -101,6 +103,25 @@ const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] =>
 
       if (previous4InPattern && lastNotInPattern && previous4.length >= 4) {
         justBroke = true;
+        // Conta quantas sequências tinha ANTES da quebra (do índice 4 pra trás)
+        for (let i = 3; i >= 0; i--) {
+          const dozen = last5NonZero[i].dozen;
+          if (dozen !== null && pair.includes(dozen)) {
+            countBeforeBreak++;
+          } else {
+            break;
+          }
+        }
+        // Continua contando pra trás se tiver mais números
+        const indexBefore5th = results.length - 6; // Índice do número antes dos últimos 5
+        for (let i = indexBefore5th; i >= 0; i--) {
+          const dozen = results[i].dozen;
+          if (dozen !== null && pair.includes(dozen)) {
+            countBeforeBreak++;
+          } else {
+            break;
+          }
+        }
       }
     }
 
@@ -111,6 +132,7 @@ const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] =>
         count: countFromEnd,
         isActive,
         justBroke,
+        countBeforeBreak: justBroke ? countBeforeBreak : undefined,
       });
     }
   }
@@ -156,6 +178,7 @@ const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] =
 
     // Quebra = o último NÃO está no padrão, mas os 4 anteriores estavam
     let justBroke = false;
+    let countBeforeBreak = 0;
     if (last5NonZero.length >= 5) {
       const lastColumn = last5NonZero[4].column;
       const previous4 = last5NonZero.slice(0, 4);
@@ -164,6 +187,25 @@ const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] =
 
       if (previous4InPattern && lastNotInPattern && previous4.length >= 4) {
         justBroke = true;
+        // Conta quantas sequências tinha ANTES da quebra (do índice 4 pra trás)
+        for (let i = 3; i >= 0; i--) {
+          const column = last5NonZero[i].column;
+          if (column !== null && pair.includes(column)) {
+            countBeforeBreak++;
+          } else {
+            break;
+          }
+        }
+        // Continua contando pra trás se tiver mais números
+        const indexBefore5th = results.length - 6; // Índice do número antes dos últimos 5
+        for (let i = indexBefore5th; i >= 0; i--) {
+          const column = results[i].column;
+          if (column !== null && pair.includes(column)) {
+            countBeforeBreak++;
+          } else {
+            break;
+          }
+        }
       }
     }
 
@@ -174,6 +216,7 @@ const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] =
         count: countFromEnd,
         isActive,
         justBroke,
+        countBeforeBreak: justBroke ? countBeforeBreak : undefined,
       });
     }
   }
@@ -269,7 +312,7 @@ export const analyzeRouletteResults = (
   // Monta relatório de TODOS os padrões
   const allPatternsReport: string[] = [];
   let hasRecentBreak = false;
-  const brokenPatterns: string[] = [];
+  const brokenPatterns: Array<{ name: string; countBefore: number }> = [];
 
   // Adiciona padrões de dúzias
   for (const p of allDozenPatterns) {
@@ -277,7 +320,10 @@ export const analyzeRouletteResults = (
     if (p.justBroke) {
       status = "🔴 QUEBROU AGORA!";
       hasRecentBreak = true;
-      brokenPatterns.push(`Dúzia ${p.positions}`);
+      brokenPatterns.push({
+        name: `Dúzia ${p.positions}`,
+        countBefore: p.countBeforeBreak || 0
+      });
     } else if (p.isActive && p.count >= 4) {
       status = "✅ ATIVO";
     } else if (p.count < 4) {
@@ -294,7 +340,10 @@ export const analyzeRouletteResults = (
     if (p.justBroke) {
       status = "🔴 QUEBROU AGORA!";
       hasRecentBreak = true;
-      brokenPatterns.push(`Coluna ${p.positions}`);
+      brokenPatterns.push({
+        name: `Coluna ${p.positions}`,
+        countBefore: p.countBeforeBreak || 0
+      });
     } else if (p.isActive && p.count >= 4) {
       status = "✅ ATIVO";
     } else if (p.count < 4) {
@@ -308,7 +357,13 @@ export const analyzeRouletteResults = (
   // Se teve quebra recente, NÃO ENTRAR!
   if (hasRecentBreak) {
     overallScore = "ruim";
-    recommendation = `⚠️ PADRÃO ACABOU DE QUEBRAR!\n\n${brokenPatterns.join(", ")} quebrou agora no último número!\n\n⏳ AGUARDE! Espere para ver:\n• Se o padrão antigo volta\n• Ou se um novo padrão se forma\n\n📊 TODOS OS PADRÕES:\n${allPatternsReport.join("\n")}`;
+
+    // Monta mensagem detalhada sobre qual padrão quebrou
+    const breakDetails = brokenPatterns
+      .map((bp) => `${bp.name} (tinha ${bp.countBefore}x sequências)`)
+      .join(" e ");
+
+    recommendation = `⚠️ PADRÃO ACABOU DE QUEBRAR!\n\n🔴 O PADRÃO QUE ESTAVA ATIVO:\n${breakDetails}\n\nO último número quebrou esse padrão!\n\n⏳ AGUARDE! Espere para ver:\n• Se o padrão antigo volta (${brokenPatterns.map(bp => bp.name).join(" ou ")})\n• Ou se um novo padrão se forma\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
 
     return {
       id: Date.now().toString(),
