@@ -259,6 +259,10 @@ export default function BankrollScreen() {
                   date.toISOString().split("T")[0] ===
                   new Date().toISOString().split("T")[0];
 
+                // Compatibilidade com estrutura antiga (sem lives)
+                const lives = result.lives || [];
+                const totalProfit = result.totalProfit || 0;
+
                 return (
                   <View
                     key={index}
@@ -279,46 +283,48 @@ export default function BankrollScreen() {
                         </Text>
 
                         {/* Lives do dia */}
-                        <View className="space-y-1">
-                          {result.lives.map((live, liveIndex) => (
-                            <View
-                              key={liveIndex}
-                              className="flex-row items-center"
-                            >
+                        {lives.length > 0 && (
+                          <View className="space-y-1">
+                            {lives.map((live, liveIndex) => (
                               <View
-                                className={`px-2 py-0.5 rounded ${
-                                  live.time === "11h"
-                                    ? "bg-blue-500/20"
-                                    : live.time === "15h"
-                                      ? "bg-purple-500/20"
-                                      : "bg-amber-500/20"
-                                }`}
+                                key={liveIndex}
+                                className="flex-row items-center"
                               >
-                                <Text
-                                  className={`text-xs font-bold ${
+                                <View
+                                  className={`px-2 py-0.5 rounded ${
                                     live.time === "11h"
-                                      ? "text-blue-400"
+                                      ? "bg-blue-500/20"
                                       : live.time === "15h"
-                                        ? "text-purple-400"
-                                        : "text-amber-400"
+                                        ? "bg-purple-500/20"
+                                        : "bg-amber-500/20"
                                   }`}
                                 >
-                                  {live.time}
+                                  <Text
+                                    className={`text-xs font-bold ${
+                                      live.time === "11h"
+                                        ? "text-blue-400"
+                                        : live.time === "15h"
+                                          ? "text-purple-400"
+                                          : "text-amber-400"
+                                    }`}
+                                  >
+                                    {live.time}
+                                  </Text>
+                                </View>
+                                <Text
+                                  className={`text-xs ml-2 ${
+                                    live.profit >= 0
+                                      ? "text-emerald-400"
+                                      : "text-red-400"
+                                  }`}
+                                >
+                                  {live.profit >= 0 ? "+" : ""}R${" "}
+                                  {live.profit.toFixed(2)}
                                 </Text>
                               </View>
-                              <Text
-                                className={`text-xs ml-2 ${
-                                  live.profit >= 0
-                                    ? "text-emerald-400"
-                                    : "text-red-400"
-                                }`}
-                              >
-                                {live.profit >= 0 ? "+" : ""}R${" "}
-                                {live.profit.toFixed(2)}
-                              </Text>
-                            </View>
-                          ))}
-                        </View>
+                            ))}
+                          </View>
+                        )}
                       </View>
 
                       <View className="items-end">
@@ -326,10 +332,10 @@ export default function BankrollScreen() {
                           Total
                         </Text>
                         <Text
-                          className={`text-xl font-bold ${result.totalProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                          className={`text-xl font-bold ${totalProfit >= 0 ? "text-emerald-400" : "text-red-400"}`}
                         >
-                          {result.totalProfit >= 0 ? "+" : ""}R${" "}
-                          {result.totalProfit.toFixed(2)}
+                          {totalProfit >= 0 ? "+" : ""}R${" "}
+                          {totalProfit.toFixed(2)}
                         </Text>
                       </View>
                     </View>
