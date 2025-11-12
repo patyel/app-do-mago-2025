@@ -1,4 +1,4 @@
-// Motor de análise de padrões de roleta - SÓ DÚZIAS E COLUNAS
+// Motor de análise de padrões de roleta - TODOS OS PADRÕES
 import {
   RouletteResult,
   RouletteColor,
@@ -44,179 +44,126 @@ export const parseRouletteNumber = (num: number): RouletteResult => {
   };
 };
 
-// Verifica se os últimos N resultados seguem um padrão de dúzias SEM QUEBRA
-const checkRecentDozenPattern = (
-  results: RouletteResult[],
-  lastN: number = 4
-): Array<{ hasPattern: boolean; dozens: DozenPosition[]; count: number; broken: boolean }> => {
-  const patterns: Array<{
-    hasPattern: boolean;
-    dozens: DozenPosition[];
-    count: number;
-    broken: boolean;
-  }> = [];
+interface AllPatternInfo {
+  type: "dozen" | "column";
+  positions: string;
+  count: number;
+  isActive: boolean; // Se está ativo agora (últimos 4)
+}
 
-  if (results.length < lastN) return patterns;
-
-  // Verifica padrões: 1+2, 1+3, 2+3
+// Analisa TODOS os padrões de dúzias na foto
+const analyzeAllDozenPatterns = (results: RouletteResult[]): AllPatternInfo[] => {
+  const allPatterns: AllPatternInfo[] = [];
   const dozenPairs = [
-    [1, 2],
-    [1, 3],
-    [2, 3],
+    { pair: [1, 2], name: "1ª + 2ª" },
+    { pair: [1, 3], name: "1ª + 3ª" },
+    { pair: [2, 3], name: "2ª + 3ª" },
   ];
 
-  for (const pair of dozenPairs) {
-    // IMPORTANTE: results[results.length - 1] é o número MAIS RECENTE (última entrada)
-    // Contamos DE TRÁS PRA FRENTE quantos seguem o padrão
-    let totalCount = 0;
-
+  for (const { pair, name } of dozenPairs) {
+    // Conta sequência do FINAL pra trás (mais recente)
+    let countFromEnd = 0;
     for (let i = results.length - 1; i >= 0; i--) {
-      if (results[i].dozen === null) continue; // Ignora zero
-
+      if (results[i].dozen === null) continue;
       if (pair.includes(results[i].dozen as number)) {
-        totalCount++;
+        countFromEnd++;
       } else {
-        // QUEBROU O PADRÃO - encontrou número fora do padrão
         break;
       }
     }
 
-    // Verifica se os últimos 4 (sem contar zeros) estão no padrão
-    // Pega do final do array (mais recentes)
-    const recentNonZero = results
-      .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
+    // Verifica se os últimos 4 estão no padrão
+    const last4NonZero = results
+      .slice(-10)
       .filter((r) => r.dozen !== null)
-      .slice(-lastN); // Pega os últimos 4 que não são zero
+      .slice(-4);
+    const isActive =
+      last4NonZero.length >= 4 && last4NonZero.every((r) => pair.includes(r.dozen as number));
 
-    const last4InPattern =
-      recentNonZero.length >= lastN &&
-      recentNonZero.every((r) => pair.includes(r.dozen as number));
-
-    // Se os últimos 4 estão no padrão e temos 4+ no total, é válido
-    if (last4InPattern && totalCount >= 4) {
-      patterns.push({
-        hasPattern: true,
-        dozens: pair as DozenPosition[],
-        count: totalCount,
-        broken: false,
-      });
-    } else if (totalCount > 0 && totalCount < 4) {
-      // Tinha começado mas não completou 4
-      patterns.push({
-        hasPattern: false,
-        dozens: pair as DozenPosition[],
-        count: totalCount,
-        broken: true,
-      });
-    } else if (totalCount >= 4 && !last4InPattern) {
-      // Tinha padrão mas quebrou
-      patterns.push({
-        hasPattern: false,
-        dozens: pair as DozenPosition[],
-        count: totalCount,
-        broken: true,
+    if (countFromEnd > 0) {
+      allPatterns.push({
+        type: "dozen",
+        positions: name,
+        count: countFromEnd,
+        isActive,
       });
     }
   }
 
-  return patterns;
+  return allPatterns;
 };
 
-// Verifica se os últimos N resultados seguem um padrão de colunas SEM QUEBRA
-const checkRecentColumnPattern = (
-  results: RouletteResult[],
-  lastN: number = 4
-): Array<{ hasPattern: boolean; columns: ColumnPosition[]; count: number; broken: boolean }> => {
-  const patterns: Array<{
-    hasPattern: boolean;
-    columns: ColumnPosition[];
-    count: number;
-    broken: boolean;
-  }> = [];
-
-  if (results.length < lastN) return patterns;
-
-  // Verifica padrões: 1+2, 1+3, 2+3
+// Analisa TODOS os padrões de colunas na foto
+const analyzeAllColumnPatterns = (results: RouletteResult[]): AllPatternInfo[] => {
+  const allPatterns: AllPatternInfo[] = [];
   const columnPairs = [
-    [1, 2],
-    [1, 3],
-    [2, 3],
+    { pair: [1, 2], name: "1ª + 2ª" },
+    { pair: [1, 3], name: "1ª + 3ª" },
+    { pair: [2, 3], name: "2ª + 3ª" },
   ];
 
-  for (const pair of columnPairs) {
-    // IMPORTANTE: results[results.length - 1] é o número MAIS RECENTE (última entrada)
-    // Contamos DE TRÁS PRA FRENTE quantos seguem o padrão
-    let totalCount = 0;
-
+  for (const { pair, name } of columnPairs) {
+    // Conta sequência do FINAL pra trás (mais recente)
+    let countFromEnd = 0;
     for (let i = results.length - 1; i >= 0; i--) {
-      if (results[i].column === null) continue; // Ignora zero
-
+      if (results[i].column === null) continue;
       if (pair.includes(results[i].column as number)) {
-        totalCount++;
+        countFromEnd++;
       } else {
-        // QUEBROU O PADRÃO - encontrou número fora do padrão
         break;
       }
     }
 
-    // Verifica se os últimos 4 (sem contar zeros) estão no padrão
-    // Pega do final do array (mais recentes)
-    const recentNonZero = results
-      .slice(-10) // Pega os últimos 10 pra garantir que tem 4 sem zero
+    // Verifica se os últimos 4 estão no padrão
+    const last4NonZero = results
+      .slice(-10)
       .filter((r) => r.column !== null)
-      .slice(-lastN); // Pega os últimos 4 que não são zero
+      .slice(-4);
+    const isActive =
+      last4NonZero.length >= 4 && last4NonZero.every((r) => pair.includes(r.column as number));
 
-    const last4InPattern =
-      recentNonZero.length >= lastN &&
-      recentNonZero.every((r) => pair.includes(r.column as number));
-
-    // Se os últimos 4 estão no padrão e temos 4+ no total, é válido
-    if (last4InPattern && totalCount >= 4) {
-      patterns.push({
-        hasPattern: true,
-        columns: pair as ColumnPosition[],
-        count: totalCount,
-        broken: false,
-      });
-    } else if (totalCount > 0 && totalCount < 4) {
-      // Tinha começado mas não completou 4
-      patterns.push({
-        hasPattern: false,
-        columns: pair as ColumnPosition[],
-        count: totalCount,
-        broken: true,
-      });
-    } else if (totalCount >= 4 && !last4InPattern) {
-      // Tinha padrão mas quebrou
-      patterns.push({
-        hasPattern: false,
-        columns: pair as ColumnPosition[],
-        count: totalCount,
-        broken: true,
+    if (countFromEnd > 0) {
+      allPatterns.push({
+        type: "column",
+        positions: name,
+        count: countFromEnd,
+        isActive,
       });
     }
   }
 
-  return patterns;
+  return allPatterns;
 };
 
-// Análise completa dos números detectados - SÓ DÚZIAS E COLUNAS
+// Análise completa dos números detectados
 export const analyzeRouletteResults = (
   numbers: number[],
   imageUri: string
 ): RouletteAnalysis => {
   const results = numbers.map(parseRouletteNumber);
 
+  console.log("🔍 Analisando números:", numbers);
+  console.log("🔍 Primeiro número (antigo):", numbers[0]);
+  console.log("🔍 Último número (RECENTE):", numbers[numbers.length - 1]);
+
+  // Analisa TODOS os padrões
+  const allDozenPatterns = analyzeAllDozenPatterns(results);
+  const allColumnPatterns = analyzeAllColumnPatterns(results);
+
+  console.log("📊 Padrões de Dúzias encontrados:", allDozenPatterns);
+  console.log("📊 Padrões de Colunas encontrados:", allColumnPatterns);
+
   const allPatterns: SequencePattern[] = [];
   const opportunities: RouletteOpportunity[] = [];
 
-  // 1. Verifica padrões de DÚZIAS nos últimos 4
-  const dozenPatterns = checkRecentDozenPattern(results, 4);
-  for (const pattern of dozenPatterns) {
-    if (pattern.hasPattern && !pattern.broken) {
+  // Processa padrões de DÚZIAS
+  for (const pattern of allDozenPatterns) {
+    if (pattern.isActive && pattern.count >= 4) {
+      const [d1, d2] = pattern.positions.split(" + ").map((s) => parseInt(s.replace("ª", "")));
+
       allPatterns.push({
         type: "dozen",
-        values: pattern.dozens,
+        values: [d1, d2] as DozenPosition[],
         count: pattern.count,
       });
 
@@ -229,20 +176,21 @@ export const analyzeRouletteResults = (
 
       opportunities.push({
         type: "dozen",
-        betOn: pattern.dozens.map((d) => `${d}ª Dúzia`),
+        betOn: [`${d1}ª Dúzia`, `${d2}ª Dúzia`],
         sequenceCount: pattern.count,
         confidence,
       });
     }
   }
 
-  // 2. Verifica padrões de COLUNAS nos últimos 4
-  const columnPatterns = checkRecentColumnPattern(results, 4);
-  for (const pattern of columnPatterns) {
-    if (pattern.hasPattern && !pattern.broken) {
+  // Processa padrões de COLUNAS
+  for (const pattern of allColumnPatterns) {
+    if (pattern.isActive && pattern.count >= 4) {
+      const [c1, c2] = pattern.positions.split(" + ").map((s) => parseInt(s.replace("ª", "")));
+
       allPatterns.push({
         type: "column",
-        values: pattern.columns,
+        values: [c1, c2] as ColumnPosition[],
         count: pattern.count,
       });
 
@@ -255,84 +203,56 @@ export const analyzeRouletteResults = (
 
       opportunities.push({
         type: "column",
-        betOn: pattern.columns.map((c) => `${c}ª Coluna`),
+        betOn: [`${c1}ª Coluna`, `${c2}ª Coluna`],
         sequenceCount: pattern.count,
         confidence,
       });
     }
   }
 
-  // Verifica se algum padrão quebrou
-  const brokenDozenPatterns = dozenPatterns.filter((p) => p.broken);
-  const brokenColumnPatterns = columnPatterns.filter((p) => p.broken);
-  const hasBrokenPatterns = brokenDozenPatterns.length > 0 || brokenColumnPatterns.length > 0;
-
-  // Determina score geral baseado na MÉDIA dos padrões
+  // Determina score geral
   let overallScore: "ruim" | "bom" | "alavancar" = "ruim";
   let recommendation = "";
 
-  if (hasBrokenPatterns && opportunities.length === 0) {
-    // Padrão quebrou - GAIL (não entre)
+  // Monta relatório de TODOS os padrões
+  const allPatternsReport: string[] = [];
+
+  // Adiciona padrões de dúzias
+  for (const p of allDozenPatterns) {
+    const status = p.isActive && p.count >= 4 ? "✅ ATIVO" : p.count < 4 ? "⏳ Fraco" : "❌ Quebrou";
+    allPatternsReport.push(`Dúzia ${p.positions}: ${p.count}x ${status}`);
+  }
+
+  // Adiciona padrões de colunas
+  for (const p of allColumnPatterns) {
+    const status = p.isActive && p.count >= 4 ? "✅ ATIVO" : p.count < 4 ? "⏳ Fraco" : "❌ Quebrou";
+    allPatternsReport.push(`Coluna ${p.positions}: ${p.count}x ${status}`);
+  }
+
+  if (opportunities.length === 0) {
+    // Nenhum padrão ATIVO com 4+
     overallScore = "ruim";
 
-    // Monta informações sobre o padrão que quebrou
-    const brokenInfo: string[] = [];
-
-    for (const pattern of brokenDozenPatterns) {
-      const dozenNames = pattern.dozens.map((d) => `${d}ª`).join(" + ");
-      brokenInfo.push(`Dúzia ${dozenNames} (tinha ${pattern.count}x)`);
-    }
-
-    for (const pattern of brokenColumnPatterns) {
-      const columnNames = pattern.columns.map((c) => `${c}ª`).join(" + ");
-      brokenInfo.push(`Coluna ${columnNames} (tinha ${pattern.count}x)`);
-    }
-
-    recommendation = `⚠️ PADRÃO QUEBROU!\n\nEstava em:\n${brokenInfo.join("\n")}\n\nAGUARDE o padrão voltar a se formar (4+ sequências consecutivas) antes de entrar.`;
-  } else if (opportunities.length === 0) {
-    // Nenhum padrão encontrado nos últimos 4
-    overallScore = "ruim";
-
-    // Verifica se tinha algum padrão que não completou 4x
-    const weakPatterns: string[] = [];
-
-    for (const pattern of dozenPatterns) {
-      if (pattern.count < 4 && pattern.count > 0) {
-        const dozenNames = pattern.dozens.map((d) => `${d}ª`).join(" + ");
-        weakPatterns.push(`Dúzia ${dozenNames} (só ${pattern.count}x)`);
-      }
-    }
-
-    for (const pattern of columnPatterns) {
-      if (pattern.count < 4 && pattern.count > 0) {
-        const columnNames = pattern.columns.map((c) => `${c}ª`).join(" + ");
-        weakPatterns.push(`Coluna ${columnNames} (só ${pattern.count}x)`);
-      }
-    }
-
-    if (weakPatterns.length > 0) {
-      recommendation = `❌ SEM PADRÃO VÁLIDO!\n\nTinha começado:\n${weakPatterns.join("\n")}\n\nMas ainda não completou 4 sequências. Aguarde!`;
+    if (allPatternsReport.length > 0) {
+      recommendation = `❌ NÃO ENTRE AGORA!\n\nTODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}\n\nNenhum padrão está ativo com 4+ sequências nos últimos resultados.`;
     } else {
       recommendation =
-        "❌ Sem padrão válido! Os últimos 4 resultados não formam nenhum padrão de dúzias ou colunas. Aguarde pelo menos 4 resultados consecutivos no mesmo padrão.";
+        "❌ Sem padrão válido! Os últimos resultados não formam nenhum padrão de dúzias ou colunas.";
     }
   } else {
-    // Calcula a média dos counts
+    // Tem padrões ativos
     const totalCount = opportunities.reduce((sum, opp) => sum + opp.sequenceCount, 0);
     const avgCount = totalCount / opportunities.length;
 
-    // Conta quantos são "alavancar"
-    const alavancaCount = opportunities.filter((o) => o.confidence === "alavancar").length;
-
     if (avgCount >= 6 && avgCount <= 20) {
       overallScore = "alavancar";
-      recommendation = `🚀 ALAVANCAR AGORA! Encontrei ${opportunities.length} padrão(ns) forte(s) com média de ${Math.round(avgCount)} sequências. Padrão ATIVO e sem quebra!`;
+      recommendation = `🚀 ALAVANCAR AGORA!\n\nENTRE EM:\n${opportunities.map((o) => `${o.betOn.join(" + ")}: ${o.sequenceCount}x`).join("\n")}\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
     } else if (avgCount >= 4) {
       overallScore = "bom";
-      recommendation = `👍 BOM MOMENTO! Encontrei ${opportunities.length} padrão(ns) com média de ${Math.round(avgCount)} sequências. Padrão ativo nos últimos 4 resultados.`;
+      recommendation = `👍 BOM MOMENTO!\n\nENTRE EM:\n${opportunities.map((o) => `${o.betOn.join(" + ")}: ${o.sequenceCount}x`).join("\n")}\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
     } else {
       overallScore = "ruim";
-      recommendation = `⚠️ Padrão fraco (média ${Math.round(avgCount)}x). Aguarde mais resultados para formar um padrão mais forte (mínimo 4x).`;
+      recommendation = `⚠️ Padrão fraco!\n\n📊 TODOS OS PADRÕES NA FOTO:\n${allPatternsReport.join("\n")}`;
     }
   }
 

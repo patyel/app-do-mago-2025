@@ -97,6 +97,10 @@ Se não conseguir identificar claramente, responda: "ERRO: Não foi possível id
         );
       }
 
+      console.log("📸 Números detectados pela IA:", numbers);
+      console.log("🎯 Primeiro (antigo):", numbers[0]);
+      console.log("🎯 Último (RECENTE):", numbers[numbers.length - 1]);
+
       // Analisa os padrões
       setStatus("Analisando padrões e sequências...");
       const analysis = analyzeRouletteResults(numbers, imageUri);
