@@ -1,0 +1,101 @@
+🚀 GUIA RÁPIDO - SUBIR BACKEND NO RAILWAY
+==========================================
+
+✅ SEU CÓDIGO JÁ ESTÁ NO GITHUB!
+
+Agora siga estes passos no computador/celular:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 1: CRIAR CONTA NO RAILWAY
+-----------------------------------
+1. Abra: https://railway.app/
+2. Clique em "Start a New Project"
+3. Faça login com sua conta do GITHUB
+4. Autorize o Railway
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 2: CRIAR PROJETO
+-----------------------------------
+1. No Railway, clique "New Project"
+2. Escolha "Deploy from GitHub repo"
+3. Selecione seu repositório do app
+4. Aguarde começar o deploy
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 3: CONFIGURAR ROOT DIRECTORY (IMPORTANTE!)
+-----------------------------------
+⚠️ ESTE PASSO É ESSENCIAL!
+
+1. Clique no seu projeto
+2. Clique em "Settings" (engrenagem)
+3. Procure "Root Directory"
+4. Digite: backend
+5. Clique "Save"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 4: ADICIONAR CHAVE DA OPENAI
+-----------------------------------
+1. Clique em "Variables"
+2. Clique "New Variable"
+3. Digite:
+   Nome: OPENAI_API_KEY
+   Valor: (sua chave que começa com sk-...)
+4. Clique "Add"
+
+5. Adicione mais uma:
+   Nome: PORT
+   Valor: 3000
+6. Clique "Add"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 5: GERAR URL PÚBLICA
+-----------------------------------
+1. Vá em "Settings"
+2. Role até "Networking"
+3. Clique "Generate Domain"
+4. COPIE A URL (ex: seu-app-production.up.railway.app)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 6: TESTAR SE FUNCIONOU
+-----------------------------------
+1. Cole a URL no navegador
+2. Deve aparecer:
+   {
+     "status": "online",
+     "version": "1.0.0",
+     "message": "Backend do App do Mago está funcionando! 🎩✨"
+   }
+
+3. Se apareceu, FUNCIONOU! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📍 PASSO 7: ME ENVIE A URL
+-----------------------------------
+Quando você tiver a URL do Railway, me envie aqui:
+
+"Aqui está a URL: https://seu-app-production.up.railway.app"
+
+Vou atualizar o app para conectar no seu backend!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💰 CUSTOS
+-----------------------------------
+✅ Gratuito: $5/mês de crédito (renova sozinho)
+✅ Suficiente para 50.000 análises/mês
+✅ Não precisa cartão de crédito
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 PROBLEMAS?
+-----------------------------------
+Se der erro, me manda print aqui que eu resolvo!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
