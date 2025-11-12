@@ -6,7 +6,7 @@ import { RouletteAnalysis } from "../types/roulette";
 // Importar screens (vamos criar)
 import OnboardingScreen from "../screens/OnboardingScreen";
 import HomeScreen from "../screens/HomeScreen";
-import CameraScreen from "../screens/CameraScreen";
+import ImagePickerScreen from "../screens/ImagePickerScreen";
 import AnalysisScreen from "../screens/AnalysisScreen";
 import ResultsScreen from "../screens/ResultsScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -33,7 +33,7 @@ export const RootNavigator = () => {
     >
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Camera" component={CameraScreen} />
+      <Stack.Screen name="Camera" component={ImagePickerScreen} />
       <Stack.Screen
         name="Analysis"
         component={AnalysisScreen}

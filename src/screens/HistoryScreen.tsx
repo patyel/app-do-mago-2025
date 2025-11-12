@@ -21,7 +21,7 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
   const getScoreIcon = (score: string) => {
     switch (score) {
       case "alavancar":
-        return { icon: "rocket" as const, color: "text-emerald-500" };
+        return { icon: "rocket" as const, color: "text-purple-500" };
       case "bom":
         return { icon: "trending-up" as const, color: "text-yellow-500" };
       default:
@@ -40,7 +40,7 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
                 onPress={() => navigation.goBack()}
                 className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
               >
-                <Ionicons name="arrow-back" size={24} color="#10b981" />
+                <Ionicons name="arrow-back" size={24} color="#a855f7" />
               </Pressable>
               <Text className="text-white text-xl font-bold">Histórico</Text>
               <View className="w-12" />
@@ -65,7 +65,7 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
                   </Text>
                 </View>
                 <View className="items-center">
-                  <Text className="text-emerald-400 text-sm mb-1">Alavancas</Text>
+                  <Text className="text-purple-400 text-sm mb-1">Alavancas</Text>
                   <Text className="text-white text-2xl font-bold">
                     {userStats.alavancasEncontradas}
                   </Text>
@@ -125,8 +125,8 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
                                 name={scoreData.icon}
                                 size={20}
                                 color={
-                                  scoreData.color === "text-emerald-500"
-                                    ? "#10b981"
+                                  scoreData.color === "text-purple-500"
+                                    ? "#a855f7"
                                     : scoreData.color === "text-yellow-500"
                                     ? "#eab308"
                                     : "#ef4444"

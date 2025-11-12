@@ -1,13 +1,13 @@
-# RoletaPro - Assistente Inteligente de Roleta
+# App do Mago 🎩 - Magia e Inteligência para Roleta
 
 ## 📱 Sobre o App
 
-RoletaPro é um aplicativo mobile que usa Inteligência Artificial para analisar mesas de roleta e identificar padrões de sequência, ajudando você a encontrar as melhores oportunidades de entrada.
+App do Mago é um aplicativo mobile que usa Inteligência Artificial para analisar mesas de roleta e identificar padrões de sequência, ajudando você a encontrar as melhores oportunidades de entrada com a magia da IA.
 
 ## ✨ Funcionalidades
 
 ### 🎯 Análise Inteligente com IA
-- Tire uma foto do painel da roleta
+- Envie uma foto do painel da roleta da sua galeria
 - IA de visão (GPT-4o) detecta automaticamente os números
 - Análise matemática de padrões em tempo real
 
@@ -38,7 +38,7 @@ O app identifica sequências em:
 
 ## 🎯 Estratégia
 
-O RoletaPro opera **a favor da sequência**:
+O App do Mago opera **a favor da sequência**:
 
 - Quando detectamos 4+ repetições consecutivas em **cores**, **dúzias** ou **colunas**, você recebe uma entrada
 - A estratégia se baseia em apostar na continuidade do padrão observado
@@ -67,7 +67,7 @@ src/
 ├── screens/           # Telas do app
 │   ├── OnboardingScreen.tsx    # Introdução e tutorial
 │   ├── HomeScreen.tsx          # Tela principal
-│   ├── CameraScreen.tsx        # Captura de foto
+│   ├── ImagePickerScreen.tsx   # Upload de foto
 │   ├── AnalysisScreen.tsx      # Processamento com IA
 │   ├── ResultsScreen.tsx       # Resultados da análise
 │   └── HistoryScreen.tsx       # Histórico e stats
@@ -117,8 +117,8 @@ src/
 
 ### Fluxo de Análise
 
-1. **Captura**: Usuário tira foto do painel (`CameraScreen`)
-2. **Upload**: Imagem é convertida para base64
+1. **Upload**: Usuário escolhe foto do painel da galeria (`ImagePickerScreen`)
+2. **Conversão**: Imagem é convertida para base64
 3. **IA Vision**: GPT-4o detecta os números na imagem
 4. **Parse**: Números são convertidos em objetos RouletteResult
 5. **Análise**: Motor detecta todos os padrões de sequência
@@ -129,7 +129,7 @@ src/
 
 - **Tema**: Dark mode com gradientes (slate-950 → slate-800)
 - **Cores principais**:
-  - Emerald (verde): CTA e sucesso
+  - Purple (roxo): CTA e magia
   - Yellow (amarelo): Padrões bons
   - Red (vermelho): Padrões ruins
 - **Tipografia**: System font com pesos bold e semibold
@@ -138,10 +138,10 @@ src/
 
 ## 📝 Como Usar
 
-1. **Primeira vez**: Veja o onboarding explicando a estratégia
-2. **Tela Home**: Veja suas estatísticas e toque em "Analisar Mesa"
-3. **Câmera**: Fotografe o painel da roleta com os últimos resultados
-4. **Análise**: Aguarde a IA processar (5-10 segundos)
+1. **Primeira vez**: Veja o onboarding explicando a estratégia mágica
+2. **Tela Home**: Veja suas estatísticas e toque em "Enviar Foto da Mesa"
+3. **Escolher Foto**: Selecione uma foto da galeria mostrando o painel da roleta
+4. **Análise**: Aguarde a magia da IA processar (5-10 segundos)
 5. **Resultados**: Veja as oportunidades detectadas e onde apostar
 6. **Histórico**: Acesse suas análises anteriores a qualquer momento
 
@@ -176,4 +176,4 @@ O app requer:
 
 ---
 
-Desenvolvido com ❤️ usando Vibecode AI App Builder
+✨ Desenvolvido com magia usando Vibecode AI App Builder

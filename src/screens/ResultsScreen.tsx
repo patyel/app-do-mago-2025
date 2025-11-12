@@ -20,7 +20,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
   const getScoreColor = () => {
     switch (analysis.overallScore) {
       case "alavancar":
-        return { bg: "bg-emerald-500", text: "text-emerald-500", icon: "rocket" as const };
+        return { bg: "bg-purple-500", text: "text-purple-500", icon: "rocket" as const };
       case "bom":
         return { bg: "bg-yellow-500", text: "text-yellow-500", icon: "trending-up" as const };
       default:
@@ -42,7 +42,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
   const getConfidenceBadge = (confidence: string) => {
     switch (confidence) {
       case "alavancar":
-        return "bg-emerald-500";
+        return "bg-purple-500";
       case "bom":
         return "bg-yellow-500";
       default:
@@ -64,7 +64,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
                   onPress={() => navigation.navigate("Home")}
                   className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
                 >
-                  <Ionicons name="home" size={24} color="#10b981" />
+                  <Ionicons name="home" size={24} color="#a855f7" />
                 </Pressable>
                 <Text className="text-white text-xl font-bold">Resultado</Text>
                 <View className="w-12" />
@@ -150,7 +150,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
                         <Text
                           className={`${
                             opp.confidence === "alavancar"
-                              ? "text-emerald-400"
+                              ? "text-purple-400"
                               : opp.confidence === "bom"
                               ? "text-yellow-400"
                               : "text-red-400"
@@ -203,7 +203,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
             </Pressable>
             <Pressable
               onPress={() => navigation.navigate("Home")}
-              className="flex-1 bg-emerald-500 rounded-2xl py-4 items-center active:opacity-80"
+              className="flex-1 bg-purple-500 rounded-2xl py-4 items-center active:opacity-80"
             >
               <Text className="text-white font-bold">Voltar ao Início</Text>
             </Pressable>

@@ -23,16 +23,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             {/* Header */}
             <View className="mt-8 mb-8">
               <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-3xl font-bold text-white">RoletaPro</Text>
+                <Text className="text-3xl font-bold text-white">App do Mago 🎩</Text>
                 <Pressable
                   onPress={() => navigation.navigate("History")}
                   className="w-12 h-12 bg-slate-800 rounded-full items-center justify-center active:opacity-70"
                 >
-                  <Ionicons name="time" size={24} color="#10b981" />
+                  <Ionicons name="time" size={24} color="#a855f7" />
                 </Pressable>
               </View>
               <Text className="text-slate-400 text-base">
-                Analise padrões e encontre as melhores entradas
+                Magia e inteligência para suas melhores entradas
               </Text>
             </View>
 
@@ -51,7 +51,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 </Text>
               </View>
               <View className="flex-1 bg-slate-800 rounded-2xl p-4 ml-2">
-                <Text className="text-emerald-400 text-sm mb-1">Alavancas</Text>
+                <Text className="text-purple-400 text-sm mb-1">Alavancas</Text>
                 <Text className="text-white text-3xl font-bold">
                   {userStats.alavancasEncontradas}
                 </Text>
@@ -61,16 +61,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             {/* Main Action Button */}
             <Pressable
               onPress={() => navigation.navigate("Camera")}
-              className="bg-emerald-500 rounded-3xl p-8 items-center mb-8 active:opacity-80"
+              className="bg-purple-500 rounded-3xl p-8 items-center mb-8 active:opacity-80"
             >
               <View className="w-20 h-20 bg-white rounded-full items-center justify-center mb-4">
-                <Ionicons name="camera" size={40} color="#10b981" />
+                <Ionicons name="images" size={40} color="#a855f7" />
               </View>
               <Text className="text-white text-2xl font-bold mb-2">
-                Analisar Mesa
+                Enviar Foto da Mesa
               </Text>
-              <Text className="text-emerald-100 text-center">
-                Tire uma foto do painel e descubra as melhores entradas
+              <Text className="text-purple-100 text-center">
+                Escolha uma foto do painel e descubra as melhores entradas
               </Text>
             </Pressable>
 
@@ -78,23 +78,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             <View className="space-y-4 mb-8">
               <View className="bg-slate-800 rounded-2xl p-5">
                 <View className="flex-row items-center mb-3">
-                  <Ionicons name="flash" size={24} color="#fbbf24" />
+                  <Ionicons name="flash" size={24} color="#a855f7" />
                   <Text className="text-white font-bold text-lg ml-2">
                     Como Usar
                   </Text>
                 </View>
                 <Text className="text-slate-300 leading-6">
-                  1. Fotografe o painel da roleta com os últimos resultados{"\n"}
-                  2. Aguarde a análise da IA{"\n"}
+                  1. Envie uma foto do painel da roleta com os últimos resultados{"\n"}
+                  2. Aguarde a magia da IA analisar{"\n"}
                   3. Receba suas entradas e recomendações
                 </Text>
               </View>
 
               <View className="bg-slate-800 rounded-2xl p-5">
                 <View className="flex-row items-center mb-3">
-                  <Ionicons name="trending-up" size={24} color="#10b981" />
+                  <Ionicons name="sparkles" size={24} color="#a855f7" />
                   <Text className="text-white font-bold text-lg ml-2">
-                    Estratégia
+                    A Magia
                   </Text>
                 </View>
                 <Text className="text-slate-300 leading-6">

@@ -37,14 +37,14 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
           <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
             {/* Header */}
             <View className="items-center mt-12 mb-8">
-              <View className="w-24 h-24 bg-emerald-500 rounded-full items-center justify-center mb-4">
-                <Ionicons name="analytics" size={48} color="white" />
+              <View className="w-24 h-24 bg-purple-500 rounded-full items-center justify-center mb-4">
+                <Ionicons name="sparkles" size={48} color="white" />
               </View>
               <Text className="text-4xl font-bold text-white text-center">
-                RoletaPro
+                App do Mago
               </Text>
               <Text className="text-lg text-slate-400 text-center mt-2">
-                Seu Assistente Inteligente de Roleta
+                Magia e Inteligência para suas Entradas
               </Text>
             </View>
 
@@ -57,27 +57,27 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
               <View className="space-y-6">
                 {/* Passo 1 */}
                 <View className="flex-row items-start">
-                  <View className="w-12 h-12 bg-emerald-500 rounded-full items-center justify-center mr-4">
+                  <View className="w-12 h-12 bg-purple-500 rounded-full items-center justify-center mr-4">
                     <Text className="text-white font-bold text-lg">1</Text>
                   </View>
                   <View className="flex-1">
                     <Text className="text-white font-semibold text-lg mb-1">
-                      Tire uma Foto
+                      Envie uma Foto
                     </Text>
                     <Text className="text-slate-400">
-                      Fotografe o painel da roleta mostrando os últimos resultados
+                      Escolha uma foto do painel da roleta mostrando os últimos resultados
                     </Text>
                   </View>
                 </View>
 
                 {/* Passo 2 */}
                 <View className="flex-row items-start mt-6">
-                  <View className="w-12 h-12 bg-emerald-500 rounded-full items-center justify-center mr-4">
+                  <View className="w-12 h-12 bg-purple-500 rounded-full items-center justify-center mr-4">
                     <Text className="text-white font-bold text-lg">2</Text>
                   </View>
                   <View className="flex-1">
                     <Text className="text-white font-semibold text-lg mb-1">
-                      IA Analisa Padrões
+                      Magia da IA
                     </Text>
                     <Text className="text-slate-400">
                       Nossa IA detecta sequências em cores, dúzias e colunas
@@ -87,12 +87,12 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
 
                 {/* Passo 3 */}
                 <View className="flex-row items-start mt-6">
-                  <View className="w-12 h-12 bg-emerald-500 rounded-full items-center justify-center mr-4">
+                  <View className="w-12 h-12 bg-purple-500 rounded-full items-center justify-center mr-4">
                     <Text className="text-white font-bold text-lg">3</Text>
                   </View>
                   <View className="flex-1">
                     <Text className="text-white font-semibold text-lg mb-1">
-                      Receba Entradas
+                      Receba suas Entradas Mágicas
                     </Text>
                     <Text className="text-slate-400">
                       Veja onde apostar e a qualidade de cada oportunidade
@@ -105,9 +105,9 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
             {/* Estratégia */}
             <View className="mt-10 bg-slate-800 rounded-2xl p-6">
               <View className="flex-row items-center mb-4">
-                <Ionicons name="information-circle" size={24} color="#10b981" />
+                <Ionicons name="information-circle" size={24} color="#a855f7" />
                 <Text className="text-xl font-bold text-white ml-2">
-                  Nossa Estratégia
+                  A Magia por Trás
                 </Text>
               </View>
               <Text className="text-slate-300 leading-6">
@@ -142,8 +142,8 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
                   </View>
                 </View>
 
-                <View className="flex-row items-center bg-emerald-900/30 border border-emerald-700 rounded-xl p-4">
-                  <View className="w-3 h-3 bg-emerald-500 rounded-full mr-3" />
+                <View className="flex-row items-center bg-purple-900/30 border border-purple-700 rounded-xl p-4">
+                  <View className="w-3 h-3 bg-purple-500 rounded-full mr-3" />
                   <View className="flex-1">
                     <Text className="text-white font-semibold">Alavancar</Text>
                     <Text className="text-slate-400 text-sm">
@@ -159,10 +159,10 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
           <View className="px-6 pb-6">
             <Pressable
               onPress={handleStart}
-              className="bg-emerald-500 rounded-2xl py-4 items-center active:opacity-80"
+              className="bg-purple-500 rounded-2xl py-4 items-center active:opacity-80"
             >
               <Text className="text-white font-bold text-lg">
-                Começar Agora
+                Começar a Magia
               </Text>
             </Pressable>
           </View>
