@@ -226,55 +226,92 @@ export const analyzeRouletteResults = (
 
   // Processa padrões de DÚZIAS
   for (const pattern of allDozenPatterns) {
-    if (pattern.isActive && pattern.count >= 4) {
+    // Só considera entrada se está ATIVO agora (últimos 4 estão no padrão)
+    if (pattern.isActive) {
       const [d1, d2] = pattern.positions.split(" + ").map((s) => parseInt(s.replace("ª", "")));
 
-      allPatterns.push({
-        type: "dozen",
-        values: [d1, d2] as DozenPosition[],
-        count: pattern.count,
-      });
+      // Para entradas ativas, usa o count do final (quantos consecutivos até agora)
+      const countForActive = pattern.count; // maxConsecutive já foi calculado
 
-      let confidence: "ruim" | "bom" | "alavancar" = "ruim";
-      if (pattern.count >= 6 && pattern.count <= 20) {
-        confidence = "alavancar";
-      } else if (pattern.count >= 4) {
-        confidence = "bom";
+      // IMPORTANTE: Recalcula o count correto para padrões ativos
+      // Conta do final pra trás quantos estão no padrão
+      let activeCount = 0;
+      const pair = [d1, d2];
+      for (let i = results.length - 1; i >= 0; i--) {
+        if (results[i].dozen === null) continue;
+        if (pair.includes(results[i].dozen as number)) {
+          activeCount++;
+        } else {
+          break;
+        }
       }
 
-      opportunities.push({
-        type: "dozen",
-        betOn: [`${d1}ª Dúzia`, `${d2}ª Dúzia`],
-        sequenceCount: pattern.count,
-        confidence,
-      });
+      // Só adiciona se tem pelo menos 4 sequências ATIVAS
+      if (activeCount >= 4) {
+        allPatterns.push({
+          type: "dozen",
+          values: [d1, d2] as DozenPosition[],
+          count: activeCount,
+        });
+
+        let confidence: "ruim" | "bom" | "alavancar" = "ruim";
+        if (activeCount >= 6 && activeCount <= 20) {
+          confidence = "alavancar";
+        } else if (activeCount >= 4) {
+          confidence = "bom";
+        }
+
+        opportunities.push({
+          type: "dozen",
+          betOn: [`${d1}ª Dúzia`, `${d2}ª Dúzia`],
+          sequenceCount: activeCount,
+          confidence,
+        });
+      }
     }
   }
 
   // Processa padrões de COLUNAS
   for (const pattern of allColumnPatterns) {
-    if (pattern.isActive && pattern.count >= 4) {
+    // Só considera entrada se está ATIVO agora (últimos 4 estão no padrão)
+    if (pattern.isActive) {
       const [c1, c2] = pattern.positions.split(" + ").map((s) => parseInt(s.replace("ª", "")));
 
-      allPatterns.push({
-        type: "column",
-        values: [c1, c2] as ColumnPosition[],
-        count: pattern.count,
-      });
-
-      let confidence: "ruim" | "bom" | "alavancar" = "ruim";
-      if (pattern.count >= 6 && pattern.count <= 20) {
-        confidence = "alavancar";
-      } else if (pattern.count >= 4) {
-        confidence = "bom";
+      // IMPORTANTE: Recalcula o count correto para padrões ativos
+      // Conta do final pra trás quantos estão no padrão
+      let activeCount = 0;
+      const pair = [c1, c2];
+      for (let i = results.length - 1; i >= 0; i--) {
+        if (results[i].column === null) continue;
+        if (pair.includes(results[i].column as number)) {
+          activeCount++;
+        } else {
+          break;
+        }
       }
 
-      opportunities.push({
-        type: "column",
-        betOn: [`${c1}ª Coluna`, `${c2}ª Coluna`],
-        sequenceCount: pattern.count,
-        confidence,
-      });
+      // Só adiciona se tem pelo menos 4 sequências ATIVAS
+      if (activeCount >= 4) {
+        allPatterns.push({
+          type: "column",
+          values: [c1, c2] as ColumnPosition[],
+          count: activeCount,
+        });
+
+        let confidence: "ruim" | "bom" | "alavancar" = "ruim";
+        if (activeCount >= 6 && activeCount <= 20) {
+          confidence = "alavancar";
+        } else if (activeCount >= 4) {
+          confidence = "bom";
+        }
+
+        opportunities.push({
+          type: "column",
+          betOn: [`${c1}ª Coluna`, `${c2}ª Coluna`],
+          sequenceCount: activeCount,
+          confidence,
+        });
+      }
     }
   }
 
