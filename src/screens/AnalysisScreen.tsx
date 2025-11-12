@@ -61,28 +61,15 @@ const AnalysisScreen: React.FC<AnalysisScreenProps> = ({ navigation, route }) =>
       setStatus("Analisando números da roleta...");
       const openai = getOpenAIClient();
 
-      const prompt = `Você é um especialista em analisar painéis de roleta. Analise esta imagem e extraia os números do painel EXATAMENTE da ESQUERDA para DIREITA (ou de CIMA para BAIXO).
+      const prompt = `Analise esta imagem de um painel de roleta e extraia TODOS os números visíveis.
 
-⚠️ SUPER IMPORTANTE - ORDEM DOS NÚMEROS:
-- Leia os números da ESQUERDA → DIREITA (igual ler um livro)
-- Se o painel for vertical, leia de CIMA → BAIXO
-- O PRIMEIRO número que você vê (mais à esquerda/topo) = MAIS ANTIGO
-- O ÚLTIMO número que você vê (mais à direita/embaixo) = MAIS RECENTE (última entrada)
-- Retorne os números NESSA ORDEM EXATA
+Retorne apenas os números separados por vírgula, da forma que aparecem na imagem.
+Os números devem estar entre 0 e 36.
+Não adicione texto extra, apenas os números.
 
-FORMATO DA RESPOSTA:
-- Apenas números separados por vírgula
-- Números devem estar entre 0 e 36
-- Sem texto adicional
+Exemplo de resposta: 5,12,23,8,19,3,27
 
-EXEMPLO VISUAL:
-Painel mostra: [5] [12] [23] [8] [19] [3] [27]
-              ↑                           ↑
-           ANTIGO                    MAIS RECENTE
-
-Sua resposta deve ser: 5,12,23,8,19,3,27
-
-Se não conseguir identificar claramente, responda: "ERRO: Não foi possível identificar os números"`;
+Se não conseguir identificar, responda: ERRO`;
 
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
@@ -120,20 +107,10 @@ Se não conseguir identificar claramente, responda: "ERRO: Não foi possível id
       }
 
       console.log("📸 Números detectados pela IA:", numbers);
-      console.log("🎯 Primeiro (antigo):", numbers[0]);
-      console.log("🎯 Último (RECENTE):", numbers[numbers.length - 1]);
-
-      // INVERTE a ordem porque a IA está lendo ao contrário
-      // O primeiro número na lista é na verdade o MAIS RECENTE
-      const numbersReversed = [...numbers].reverse();
-
-      console.log("🔄 Números INVERTIDOS (ordem correta):", numbersReversed);
-      console.log("✅ Agora primeiro (antigo):", numbersReversed[0]);
-      console.log("✅ Agora último (RECENTE):", numbersReversed[numbersReversed.length - 1]);
 
       // Analisa os padrões
       setStatus("Analisando padrões e sequências...");
-      const analysis = analyzeRouletteResults(numbersReversed, imageUri);
+      const analysis = analyzeRouletteResults(numbers, imageUri);
 
       // Salva e navega
       setCurrentAnalysis(analysis);
