@@ -244,13 +244,49 @@ export const analyzeRouletteResults = (
   if (hasBrokenPatterns && opportunities.length === 0) {
     // Padrão quebrou - GAIL (não entre)
     overallScore = "ruim";
-    recommendation =
-      "⚠️ PADRÃO QUEBROU! O último resultado quebrou a sequência. AGUARDE o padrão voltar a se formar (4+ sequências consecutivas) antes de entrar.";
+
+    // Monta informações sobre o padrão que quebrou
+    const brokenInfo: string[] = [];
+
+    for (const pattern of brokenDozenPatterns) {
+      const dozenNames = pattern.dozens.map((d) => `${d}ª`).join(" + ");
+      brokenInfo.push(`Dúzia ${dozenNames} (tinha ${pattern.count}x)`);
+    }
+
+    for (const pattern of brokenColumnPatterns) {
+      const columnNames = pattern.columns.map((c) => `${c}ª`).join(" + ");
+      brokenInfo.push(`Coluna ${columnNames} (tinha ${pattern.count}x)`);
+    }
+
+    recommendation = `⚠️ PADRÃO QUEBROU!\n\nEstava em:\n${brokenInfo.join("\n")}\n\nAGUARDE o padrão voltar a se formar (4+ sequências consecutivas) antes de entrar.`;
+
   } else if (opportunities.length === 0) {
     // Nenhum padrão encontrado nos últimos 4
     overallScore = "ruim";
-    recommendation =
-      "❌ Sem padrão válido! Os últimos 4 resultados não formam nenhum padrão de dúzias ou colunas. Aguarde pelo menos 4 resultados consecutivos no mesmo padrão.";
+
+    // Verifica se tinha algum padrão que não completou 4x
+    const weakPatterns: string[] = [];
+
+    for (const pattern of dozenPatterns) {
+      if (pattern.count < 4 && pattern.count > 0) {
+        const dozenNames = pattern.dozens.map((d) => `${d}ª`).join(" + ");
+        weakPatterns.push(`Dúzia ${dozenNames} (só ${pattern.count}x)`);
+      }
+    }
+
+    for (const pattern of columnPatterns) {
+      if (pattern.count < 4 && pattern.count > 0) {
+        const columnNames = pattern.columns.map((c) => `${c}ª`).join(" + ");
+        weakPatterns.push(`Coluna ${columnNames} (só ${pattern.count}x)`);
+      }
+    }
+
+    if (weakPatterns.length > 0) {
+      recommendation = `❌ SEM PADRÃO VÁLIDO!\n\nTinha começado:\n${weakPatterns.join("\n")}\n\nMas ainda não completou 4 sequências. Aguarde!`;
+    } else {
+      recommendation = "❌ Sem padrão válido! Os últimos 4 resultados não formam nenhum padrão de dúzias ou colunas. Aguarde pelo menos 4 resultados consecutivos no mesmo padrão.";
+    }
+
   } else {
     // Calcula a média dos counts
     const totalCount = opportunities.reduce((sum, opp) => sum + opp.sequenceCount, 0);
