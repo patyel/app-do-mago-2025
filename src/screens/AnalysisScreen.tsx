@@ -41,21 +41,28 @@ const AnalysisScreen: React.FC<AnalysisScreenProps> = ({ navigation, route }) =>
 
       // Envia para a IA de visão
       setStatus("Analisando números da roleta...");
-      const prompt = `Você é um especialista em analisar painéis de roleta. Analise esta imagem e extraia os números do painel na ORDEM CORRETA.
+      const prompt = `Você é um especialista em analisar painéis de roleta. Analise esta imagem e extraia os números do painel EXATAMENTE da ESQUERDA para DIREITA (ou de CIMA para BAIXO).
 
-IMPORTANTE - ORDEM DOS NÚMEROS:
-- Os números devem ser retornados do MAIS ANTIGO para o MAIS RECENTE
-- O ÚLTIMO número da lista é o resultado MAIS RECENTE (última entrada que caiu agora)
-- Geralmente painéis mostram: números antigos à esquerda/topo → números recentes à direita/embaixo
-- Retorne APENAS os números encontrados, separados por vírgula
-- Os números devem estar entre 0 e 36
-- Não inclua texto adicional, apenas os números
+⚠️ SUPER IMPORTANTE - ORDEM DOS NÚMEROS:
+- Leia os números da ESQUERDA → DIREITA (igual ler um livro)
+- Se o painel for vertical, leia de CIMA → BAIXO
+- O PRIMEIRO número que você vê (mais à esquerda/topo) = MAIS ANTIGO
+- O ÚLTIMO número que você vê (mais à direita/embaixo) = MAIS RECENTE (última entrada)
+- Retorne os números NESSA ORDEM EXATA
 
-EXEMPLO de painel: [5, 12, 23, 8, 19, 3, 27]
-- 5 é o mais antigo
-- 27 é o MAIS RECENTE (última entrada)
+FORMATO DA RESPOSTA:
+- Apenas números separados por vírgula
+- Números devem estar entre 0 e 36
+- Sem texto adicional
 
-Se não conseguir identificar os números claramente, responda: "ERRO: Não foi possível identificar os números"`;
+EXEMPLO VISUAL:
+Painel mostra: [5] [12] [23] [8] [19] [3] [27]
+              ↑                           ↑
+           ANTIGO                    MAIS RECENTE
+
+Sua resposta deve ser: 5,12,23,8,19,3,27
+
+Se não conseguir identificar claramente, responda: "ERRO: Não foi possível identificar os números"`;
 
       const response = await getOpenAITextResponse([
         {
