@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -124,7 +125,7 @@ const ActivationScreen: React.FC<ActivationScreenProps> = ({ navigation }) => {
                     • O código é enviado após a compra{"\n"}
                     • Válido por 30 dias a partir da ativação{"\n"}
                     • Análises ilimitadas durante a validade{"\n"}
-                    • Entre em contato para renovar: seuemail@exemplo.com
+                    • Entre em contato: hallefpatyel1@hotmail.com
                   </Text>
                 </View>
 
@@ -146,20 +147,19 @@ const ActivationScreen: React.FC<ActivationScreenProps> = ({ navigation }) => {
                   )}
                 </Pressable>
 
-                {/* Demo Button */}
+                {/* Botão de Compra */}
                 <Pressable
                   onPress={() => {
-                    setCodigo("MAGO-DEMO-2025");
+                    Linking.openURL("https://pay.cakto.com.br/o63vdzw_645788");
                   }}
-                  className="py-4"
+                  className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl py-4 items-center active:opacity-80 border-2 border-green-400 mb-4"
                 >
-                  <Text className="text-purple-300 text-center text-sm">
-                    💡 Dica: Use{" "}
-                    <Text className="text-purple-400 font-bold">
-                      MAGO-DEMO-2025
-                    </Text>{" "}
-                    para testar
-                  </Text>
+                  <View className="flex-row items-center">
+                    <Ionicons name="cart" size={22} color="white" />
+                    <Text className="text-white font-black text-lg ml-2">
+                      Comprar Acesso
+                    </Text>
+                  </View>
                 </Pressable>
               </View>
             </ScrollView>

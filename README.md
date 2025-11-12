@@ -82,15 +82,16 @@ O App do Mago opera **a favor da sequência**:
 
 ### Design Gamificado
 - Interface dark mode com gradientes visuais impressionantes
-- **Tema Cassino**: Vermelho, preto, branco e dourado (tema de roleta/cassino)
+- **Tema Roxo/Purple**: Magia, IA e elementos premium
 - Cards com bordas arredondadas e sombras
-- Ícones grandes e informativos (roleta disc)
+- Ícones grandes e informativos
 - Animações sutis nos botões
 
 ### Copy Persuasivo
 - **Onboarding**: "Não sabe analisar padrões? Relaxa! 😌 O Mago analisa tudo pra você."
-- **Home**: "🎰 A Magia da IA nas Suas Mãos"
-- **Results**: Cards coloridos por confiança (dourado=alavancar, amarelo=bom, vermelho=fraco)
+- **Home**: "✨ A Magia da IA nas Suas Mãos"
+- **Results**: Cards coloridos por confiança (roxo=alavancar, amarelo=bom, vermelho=fraco)
+- **Ativação**: Botão verde "Comprar Acesso" para facilitar conversão
 - Linguagem acessível e motivadora
 
 ### Tipografia e Espaçamento
@@ -186,14 +187,12 @@ src/
 
 ## 🎨 Design
 
-- **Tema**: Dark mode com gradientes (casino-black-950 → casino-black-800)
+- **Tema**: Dark mode com gradientes (slate-950 → slate-800)
 - **Cores principais**:
-  - **Vermelho Casino** (#ef4444): CTA principal e destaques
-  - **Dourado** (#eab308): Alavancagem e elementos premium
+  - **Roxo/Purple**: CTA principal e elementos de destaque
   - **Amarelo**: Padrões bons
-  - **Vermelho escuro**: Padrões ruins
-  - **Preto**: Background principal
-  - **Branco**: Textos principais
+  - **Vermelho**: Padrões ruins/fracos
+  - **Verde**: Botões de compra e sucesso
 - **Tipografia**: System font com pesos bold e semibold
 - **Espaçamento**: Generoso (Apple HIG)
 - **Bordas**: Arredondadas (rounded-2xl, rounded-3xl)
@@ -247,12 +246,10 @@ O app requer:
 
 ## 🎯 Melhorias Recentes
 
-### 🎨 Tema Cassino (v4.0)
-- **Redesign completo**: Tema vermelho/preto/branco/dourado
-- **Ícone de roleta**: Substituiu estrelinhas por ícone disc (roleta)
-- **Cores de cassino**: Vermelho #ef4444, Dourado #eab308, Preto #0a0a0a
-- **Bottom tabs**: Tab bar com tema cassino (fundo preto, borda vermelha, texto dourado)
-- **Todas as telas atualizadas**: OnboardingScreen, HomeScreen, ResultsScreen, BankrollScreen, CalculatorScreen
+### 🔧 Melhorias de UX (v4.1)
+- **Navegação inteligente**: Ao clicar em "Começar a Magia" no onboarding, usuários já ativados vão direto para o app (não precisam inserir código novamente)
+- **Botão de compra**: Adicionado botão verde "Comprar Acesso" na tela de ativação que leva direto ao link de pagamento
+- **Email atualizado**: Email de contato atualizado para hallefpatyel1@hotmail.com
 
 ### ✨ Navegação em Abas (v3.0)
 - **3 Abas principais**: Análise, Banca e Calculadora
