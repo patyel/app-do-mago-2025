@@ -1,10 +1,12 @@
 // Tela Home - Principal
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigation/RootNavigator";
 import { useRouletteStore } from "../state/rouletteStore";
+import { useAccessCodeStore } from "../state/accessCodeStore";
+import { backendService } from "../services/backend";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -14,6 +16,35 @@ type HomeScreenProps = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const userStats = useRouletteStore((s) => s.userStats);
+  const codigo = useAccessCodeStore((s) => s.codigo);
+  const userInfo = useAccessCodeStore((s) => s.userInfo);
+  const clearCodigo = useAccessCodeStore((s) => s.clearCodigo);
+  const updateUserInfo = useAccessCodeStore((s) => s.updateUserInfo);
+
+  useEffect(() => {
+    // Verifica o código quando abre a Home
+    verificarCodigo();
+  }, []);
+
+  const verificarCodigo = async () => {
+    if (!codigo) return;
+
+    const resultado = await backendService.verificarCodigo(codigo);
+
+    if (!resultado.sucesso) {
+      // Código expirado ou inválido
+      clearCodigo();
+      navigation.replace("Activation");
+    } else {
+      // Atualiza info do usuário
+      updateUserInfo(resultado.usuario);
+    }
+  };
+
+  const handleRenovar = () => {
+    clearCodigo();
+    navigation.replace("Activation");
+  };
 
   return (
     <View className="flex-1 bg-slate-950">
@@ -42,6 +73,36 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 </Pressable>
               </View>
             </View>
+
+            {/* Access Code Info */}
+            {userInfo && (
+              <View className="bg-gradient-to-r from-green-900/40 to-green-800/40 rounded-2xl p-5 mb-8 border-2 border-green-500/50">
+                <View className="flex-row items-center justify-between mb-3">
+                  <View className="flex-row items-center">
+                    <View className="w-10 h-10 bg-green-500 rounded-xl items-center justify-center mr-3">
+                      <Ionicons name="checkmark-circle" size={24} color="white" />
+                    </View>
+                    <View>
+                      <Text className="text-white font-black text-lg">Acesso Ativo</Text>
+                      <Text className="text-green-300 text-sm font-semibold">
+                        {userInfo.diasRestantes} dias restantes
+                      </Text>
+                    </View>
+                  </View>
+                  <Pressable
+                    onPress={handleRenovar}
+                    className="bg-green-500 px-4 py-2 rounded-xl active:opacity-80"
+                  >
+                    <Text className="text-white font-bold text-sm">Renovar</Text>
+                  </Pressable>
+                </View>
+                <View className="bg-green-500/20 rounded-xl p-3">
+                  <Text className="text-green-200 text-xs font-mono">
+                    Código: {codigo}
+                  </Text>
+                </View>
+              </View>
+            )}
 
             {/* Stats Cards */}
             <View className="mb-8">

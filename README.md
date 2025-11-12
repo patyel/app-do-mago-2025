@@ -4,6 +4,19 @@
 
 **App do Mago** é um aplicativo mobile que usa Inteligência Artificial para analisar mesas de roleta e identificar padrões de sequência automaticamente. Não sabe analisar padrões? Relaxa! O Mago analisa tudo pra você. Envie uma foto e deixe a magia da IA trabalhar.
 
+## 💰 Sistema de Monetização
+
+Este app agora possui um **sistema completo de backend com códigos de acesso** para você monetizar vendendo assinaturas mensais (ex: R$30/mês).
+
+**Benefícios:**
+- ✅ Suas chaves da OpenAI ficam protegidas no backend
+- ✅ Você controla quem tem acesso através de códigos únicos
+- ✅ Hospedagem gratuita no Railway (até 50k requisições/mês)
+- ✅ Gerenciamento simples através de arquivo JSON
+- ✅ Rastreamento de uso por usuário
+
+📚 **Veja o guia completo**: [README_BACKEND.md](./README_BACKEND.md)
+
 ## ✨ Funcionalidades
 
 ### 🎯 Análise Inteligente com IA

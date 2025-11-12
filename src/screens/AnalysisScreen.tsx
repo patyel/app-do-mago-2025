@@ -6,8 +6,9 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../navigation/RootNavigator";
 import { useRouletteStore } from "../state/rouletteStore";
+import { useAccessCodeStore } from "../state/accessCodeStore";
 import { analyzeRouletteResults } from "../utils/rouletteAnalyzer";
-import { getOpenAITextResponse } from "../api/chat-service";
+import { backendService } from "../services/backend";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as FileSystem from "expo-file-system";
@@ -19,13 +20,21 @@ type AnalysisScreenProps = {
 
 const AnalysisScreen: React.FC<AnalysisScreenProps> = ({ navigation, route }) => {
   const { imageUri } = route.params;
-  const [status, setStatus] = useState("Carregando imagem...");
+  const [status, setStatus] = useState("Verificando acesso...");
   const [error, setError] = useState<string | null>(null);
   const setIsAnalyzing = useRouletteStore((s) => s.setIsAnalyzing);
   const addAnalysisToHistory = useRouletteStore((s) => s.addAnalysisToHistory);
   const setCurrentAnalysis = useRouletteStore((s) => s.setCurrentAnalysis);
 
+  const codigo = useAccessCodeStore((s) => s.codigo);
+  const isActive = useAccessCodeStore((s) => s.isActive);
+
   useEffect(() => {
+    // Verifica se tem código ativo
+    if (!codigo || !isActive) {
+      setError("Código de acesso inválido ou expirado. Ative um novo código para continuar.");
+      return;
+    }
     analyzeImage();
   }, []);
 
@@ -39,63 +48,15 @@ const AnalysisScreen: React.FC<AnalysisScreenProps> = ({ navigation, route }) =>
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      // Envia para a IA de visão
+      // Envia para o backend
       setStatus("Analisando números da roleta...");
-      const prompt = `Você é um especialista em analisar painéis de roleta. Analise esta imagem e extraia os números do painel EXATAMENTE da ESQUERDA para DIREITA (ou de CIMA para BAIXO).
+      const resultado = await backendService.analisarImagem(codigo!, base64);
 
-⚠️ SUPER IMPORTANTE - ORDEM DOS NÚMEROS:
-- Leia os números da ESQUERDA → DIREITA (igual ler um livro)
-- Se o painel for vertical, leia de CIMA → BAIXO
-- O PRIMEIRO número que você vê (mais à esquerda/topo) = MAIS ANTIGO
-- O ÚLTIMO número que você vê (mais à direita/embaixo) = MAIS RECENTE (última entrada)
-- Retorne os números NESSA ORDEM EXATA
-
-FORMATO DA RESPOSTA:
-- Apenas números separados por vírgula
-- Números devem estar entre 0 e 36
-- Sem texto adicional
-
-EXEMPLO VISUAL:
-Painel mostra: [5] [12] [23] [8] [19] [3] [27]
-              ↑                           ↑
-           ANTIGO                    MAIS RECENTE
-
-Sua resposta deve ser: 5,12,23,8,19,3,27
-
-Se não conseguir identificar claramente, responda: "ERRO: Não foi possível identificar os números"`;
-
-      const response = await getOpenAITextResponse([
-        {
-          role: "user",
-          content: [
-            { type: "text", text: prompt },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:image/jpeg;base64,${base64}`,
-              },
-            },
-          ],
-        },
-      ]);
-
-      const numbersText = response.content.trim();
-
-      if (numbersText.includes("ERRO")) {
-        throw new Error("A IA não conseguiu identificar os números da roleta na imagem");
+      if (!resultado.sucesso) {
+        throw new Error(resultado.erro);
       }
 
-      // Parse dos números
-      const numbers = numbersText
-        .split(",")
-        .map((n) => parseInt(n.trim()))
-        .filter((n) => !isNaN(n) && n >= 0 && n <= 36);
-
-      if (numbers.length < 4) {
-        throw new Error(
-          "Poucos números detectados. Tire uma foto mais clara do painel com pelo menos 8 números visíveis"
-        );
-      }
+      const numbers = resultado.numeros;
 
       console.log("📸 Números detectados pela IA:", numbers);
       console.log("🎯 Primeiro (antigo):", numbers[0]);

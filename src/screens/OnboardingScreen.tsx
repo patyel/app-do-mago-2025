@@ -13,18 +13,8 @@ type OnboardingScreenProps = {
 };
 
 const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ navigation }) => {
-  const completeOnboarding = useRouletteStore((s) => s.completeOnboarding);
-  const hasCompleted = useRouletteStore((s) => s.hasCompletedOnboarding);
-
-  React.useEffect(() => {
-    if (hasCompleted) {
-      navigation.replace("Home");
-    }
-  }, [hasCompleted, navigation]);
-
   const handleStart = () => {
-    completeOnboarding();
-    navigation.replace("Home");
+    navigation.replace("Activation");
   };
 
   return (

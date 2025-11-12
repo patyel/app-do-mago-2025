@@ -2,9 +2,11 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RouletteAnalysis } from "../types/roulette";
+import { useAccessCodeStore } from "../state/accessCodeStore";
 
-// Importar screens (vamos criar)
+// Importar screens
 import OnboardingScreen from "../screens/OnboardingScreen";
+import ActivationScreen from "../screens/ActivationScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ImagePickerScreen from "../screens/ImagePickerScreen";
 import AnalysisScreen from "../screens/AnalysisScreen";
@@ -13,6 +15,7 @@ import HistoryScreen from "../screens/HistoryScreen";
 
 export type RootStackParamList = {
   Onboarding: undefined;
+  Activation: undefined;
   Home: undefined;
   Camera: undefined;
   Analysis: { imageUri: string };
@@ -23,15 +26,25 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
+  const isActive = useAccessCodeStore((s) => s.isActive);
+  const hasCompletedOnboarding = useAccessCodeStore((s) => s.codigo !== null);
+
   return (
     <Stack.Navigator
-      initialRouteName="Onboarding"
+      initialRouteName={
+        hasCompletedOnboarding
+          ? isActive
+            ? "Home"
+            : "Activation"
+          : "Onboarding"
+      }
       screenOptions={{
         headerShown: false,
         animation: "slide_from_right",
       }}
     >
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Activation" component={ActivationScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Camera" component={ImagePickerScreen} />
       <Stack.Screen
