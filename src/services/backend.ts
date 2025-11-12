@@ -1,8 +1,8 @@
 // Serviço de Backend API
 // Backend deployado no Render
-const BACKEND_URL = __DEV__
-  ? "http://localhost:3000" // Desenvolvimento local
-  : "https://mago-backend.onrender.com"; // Produção
+const BACKEND_URL = "https://mago-backend.onrender.com"; // Sempre usar produção
+
+console.log("[Backend Service] Usando URL:", BACKEND_URL);
 
 export const backendService = {
   /**
@@ -10,6 +10,9 @@ export const backendService = {
    */
   verificarCodigo: async (codigo: string) => {
     try {
+      console.log("[Backend] Verificando código:", codigo);
+      console.log("[Backend] URL:", `${BACKEND_URL}/api/verificar-codigo`);
+
       const response = await fetch(`${BACKEND_URL}/api/verificar-codigo`, {
         method: "POST",
         headers: {
@@ -18,7 +21,10 @@ export const backendService = {
         body: JSON.stringify({ codigo }),
       });
 
+      console.log("[Backend] Response status:", response.status);
+
       const data = await response.json();
+      console.log("[Backend] Response data:", data);
 
       if (!response.ok) {
         return {
@@ -32,7 +38,8 @@ export const backendService = {
         usuario: data.usuario,
       };
     } catch (error) {
-      console.error("Erro ao verificar código:", error);
+      console.error("[Backend] Erro ao verificar código:", error);
+      console.error("[Backend] Error details:", JSON.stringify(error, null, 2));
       return {
         sucesso: false,
         erro: "Erro de conexão. Verifique sua internet e tente novamente.",
