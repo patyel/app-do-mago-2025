@@ -10,6 +10,24 @@ const config = getDefaultConfig(__dirname);
 // Disable Watchman for file watching.
 config.resolver.useWatchman = false;
 
+// Resolver configuration to handle missing modules
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  // Ignore react-native-worklets/plugin for web builds
+  if (moduleName === 'react-native-worklets/plugin' && platform === 'web') {
+    return {
+      type: 'empty',
+    };
+  }
+  // Ignore react-native-reanimated/plugin for web builds
+  if (moduleName === 'react-native-reanimated/plugin' && platform === 'web') {
+    return {
+      type: 'empty',
+    };
+  }
+  // Otherwise, use the default resolver
+  return context.resolveRequest(context, moduleName, platform);
+};
+
 // Get environment variables for Metro cache configuration.
 const metroCacheVersion = process.env.METRO_CACHE_VERSION || "1";
 const metroCacheHttpEndpoint = process.env.METRO_CACHE_HTTP_ENDPOINT;
