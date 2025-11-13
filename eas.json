@@ -18,8 +18,7 @@
       "autoIncrement": true,
       "android": {
         "buildType": "apk",
-        "credentialsSource": "remote",
-        "withoutCredentials": false
+        "gradleCommand": ":app:assembleRelease"
       }
     }
   },
