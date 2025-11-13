@@ -30,13 +30,19 @@ const openai_api_key = Constants.expoConfig.extra.apikey;
 
 export default function App() {
   useEffect(() => {
-    // Pede permissão de notificações
+    // Pede permissão de notificações de forma segura
     const requestPermissions = async () => {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status === "granted") {
-        // Agenda lembretes de live
-        const scheduleLiveReminders = useSettingsStore.getState().scheduleLiveReminders;
-        scheduleLiveReminders();
+      try {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status === "granted") {
+          // Agenda lembretes de live
+          const scheduleLiveReminders = useSettingsStore.getState().scheduleLiveReminders;
+          if (scheduleLiveReminders) {
+            scheduleLiveReminders();
+          }
+        }
+      } catch (error) {
+        console.log("Erro ao solicitar permissões de notificação:", error);
       }
     };
 
@@ -44,10 +50,16 @@ export default function App() {
 
     // Reseta stop loss a cada novo dia
     const checkNewDay = () => {
-      const lastUsed = useSettingsStore.getState().settings.stopLossReached;
-      if (lastUsed) {
-        const resetStopLoss = useSettingsStore.getState().resetStopLoss;
-        resetStopLoss();
+      try {
+        const lastUsed = useSettingsStore.getState().settings.stopLossReached;
+        if (lastUsed) {
+          const resetStopLoss = useSettingsStore.getState().resetStopLoss;
+          if (resetStopLoss) {
+            resetStopLoss();
+          }
+        }
+      } catch (error) {
+        console.log("Erro ao verificar stop loss:", error);
       }
     };
 

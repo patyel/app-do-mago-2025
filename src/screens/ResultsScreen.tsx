@@ -48,16 +48,17 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
     setTimeout(() => {
       setShowXPModal(true);
     }, 500);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromHistory]);
 
   // Verifica se desbloqueou conquista (APENAS SE NÃO FOR DO HISTÓRICO)
   useEffect(() => {
-    if (fromHistory) return;
+    if (fromHistory || previousAchievementCount === 0) return;
 
     const unlockedNow = achievements.filter(a => a.unlocked).length;
     if (unlockedNow > previousAchievementCount) {
       // Nova conquista desbloqueada!
-      const newAchievement = achievements.find(a => a.unlocked && !previousAchievementCount);
+      const newAchievement = achievements.find(a => a.unlocked && a.unlockedAt);
       if (newAchievement) {
         setUnlockedAchievement(newAchievement);
         // Mostra modal de conquista após fechar XP modal
@@ -66,7 +67,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ navigation, route }) => {
         }, 1500);
       }
     }
-  }, [achievements]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [achievements, previousAchievementCount, fromHistory]);
 
   const getScoreColor = () => {
     switch (analysis.overallScore) {
