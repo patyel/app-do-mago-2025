@@ -1,0 +1,11 @@
+{
+  "name": "app-do-mago-web",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "expo export --platform web",
+    "start": "expo start --web"
+  },
+  "buildCommand": "expo export --platform web",
+  "outputDirectory": "dist",
+  "framework": "expo"
+}
