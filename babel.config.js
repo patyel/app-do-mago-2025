@@ -9,7 +9,7 @@ module.exports = function (api) {
       ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
       'nativewind/babel'
     ],
-    // Só adiciona o plugin do reanimated se NÃO for web
-    plugins: isWeb ? [] : ['react-native-reanimated/plugin'],
+    // Usa mock para web, plugin real para nativo
+    plugins: isWeb ? ['./react-native-worklets-plugin-mock.js'] : ['react-native-reanimated/plugin'],
   };
 };
