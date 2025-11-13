@@ -1,0 +1,8 @@
+Build timestamp: 2025-11-13T04:00:00Z
+All fixes applied:
+- expo-notifications: ~0.31.4
+- expo: ~53.0.23
+- babel-plugin-module-resolver moved to dependencies
+- XP bug fixed
+- Android crash fixed
+- bun.lock removed
