@@ -4,6 +4,27 @@
 
 **App do Mago** é um aplicativo mobile que usa Inteligência Artificial para analisar mesas de roleta e identificar padrões de sequência automaticamente. Não sabe analisar padrões? Relaxa! O Mago analisa tudo pra você. Envie uma foto e deixe a magia da IA trabalhar.
 
+## 🤖 Distribuição do App
+
+### 📱 Para iOS (iPhone/iPad)
+Use o **Vibecode** - Seus alunos baixam o app Vibecode na App Store e acessam seu projeto pelo link universal.
+
+### 🤖 Para Android
+**IMPORTANTE**: O Vibecode ainda não está disponível no Android. Você precisa **gerar um APK** e distribuir diretamente para seus alunos.
+
+📚 **Veja o guia completo**: [GERAR_APK.md](./GERAR_APK.md)
+
+**Resumo rápido:**
+```bash
+# 1. Login no Expo
+eas login
+
+# 2. Gerar APK
+eas build --platform android --profile production
+
+# 3. Baixar o APK quando terminar e enviar pros alunos
+```
+
 ## 💰 Sistema de Monetização
 
 Este app agora possui um **sistema completo de backend com códigos de acesso** para você monetizar vendendo assinaturas mensais (ex: R$30/mês).
