@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootNavigator } from "./src/navigation/RootNavigator";
 import { useEffect } from "react";
-import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 import { useSettingsStore } from "./src/state/settingsStore";
 
 /*
@@ -28,10 +28,20 @@ const openai_api_key = Constants.expoConfig.extra.apikey;
 
 */
 
+// Importação condicional de notificações
+let Notifications: any = null;
+if (Platform.OS !== "web") {
+  Notifications = require("expo-notifications");
+}
+
 export default function App() {
   useEffect(() => {
-    // Pede permissão de notificações de forma segura
+    // Pede permissão de notificações de forma segura (apenas plataformas nativas)
     const requestPermissions = async () => {
+      if (Platform.OS === "web" || !Notifications) {
+        return;
+      }
+
       try {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status === "granted") {

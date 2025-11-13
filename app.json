@@ -28,6 +28,11 @@
         "RECORD_AUDIO"
       ]
     },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/icon.png"
+    },
     "plugins": [
       [
         "expo-camera",

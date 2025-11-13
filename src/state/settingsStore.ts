@@ -2,7 +2,24 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
+
+// Importação condicional para web
+let Notifications: any = null;
+if (Platform.OS !== "web") {
+  Notifications = require("expo-notifications");
+
+  // Configurar handler de notificações apenas em plataformas nativas
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 export interface AlertSettings {
   enableNotifications: boolean;
@@ -27,17 +44,6 @@ interface SettingsStore {
   scheduleLiveReminders: () => Promise<void>;
   sendNotification: (title: string, body: string) => Promise<void>;
 }
-
-// Configurar handler de notificações
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
 
 export const useSettingsStore = create<SettingsStore>()(
   persist(
@@ -110,6 +116,11 @@ export const useSettingsStore = create<SettingsStore>()(
       },
 
       scheduleLiveReminders: async () => {
+        if (Platform.OS === "web" || !Notifications) {
+          console.log("Notificações não suportadas na web");
+          return;
+        }
+
         const state = get();
         if (!state.settings.enableNotifications || !state.settings.liveReminders) {
           return;
@@ -148,6 +159,11 @@ export const useSettingsStore = create<SettingsStore>()(
       },
 
       sendNotification: async (title, body) => {
+        if (Platform.OS === "web" || !Notifications) {
+          console.log("Notificação (web):", title, body);
+          return;
+        }
+
         const state = get();
         if (!state.settings.enableNotifications) return;
 
