@@ -4,12 +4,22 @@ module.exports = function (api) {
   // Detectar se estamos fazendo build para web
   const isWeb = process.env.EXPO_PLATFORM === 'web' || process.env.PLATFORM === 'web';
 
+  if (isWeb) {
+    // Build web: SEM nativewind/babel que causa problema
+    return {
+      presets: [
+        ['babel-preset-expo', { jsxImportSource: 'nativewind' }]
+      ],
+      plugins: [],
+    };
+  }
+
+  // Build nativo: COM nativewind/babel e reanimated
   return {
     presets: [
       ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
       'nativewind/babel'
     ],
-    // Usa mock para web, plugin real para nativo
-    plugins: isWeb ? ['./react-native-worklets-plugin-mock.js'] : ['react-native-reanimated/plugin'],
+    plugins: ['react-native-reanimated/plugin'],
   };
 };
